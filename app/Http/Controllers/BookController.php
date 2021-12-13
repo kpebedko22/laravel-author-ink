@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use Illuminate\Http\Request;
 
+use App\Http\Requests\BookRequest;
+
 class BookController extends Controller
 {
     /**
@@ -18,24 +20,28 @@ class BookController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(BookRequest $request)
     {
-        //
+        $validated = $request->validated();
+        error_log($validated['name']);
+        error_log('storing book');
+        return "Success";
+
+        
+
+        // $book = new Book($validated);
+        // $book->save();
+
+        // $response = [
+        //     'success' => true,
+        //     'message' => 'Book is added.',
+        // ];
+        // return response()->json($response);
     }
 
     /**
@@ -44,9 +50,30 @@ class BookController extends Controller
      * @param  \App\Models\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function show(Book $book)
+    public function show($id)
     {
-        //
+        $book = Book::where('id', $id)->first();
+
+        error_log('Some message here.');
+
+        if ($book) {
+            return response()->json(
+                data: [
+                    'error' => 0,
+                    'book' => $book,
+                ],
+                status : 200,
+            );
+        }
+        else {
+            return response()->json(
+                data : [
+                    'error' => 1,
+                    'errorMessage' => 'Book is not found.'
+                ],
+                status : 404,
+            );
+        }
     }
 
     /**
