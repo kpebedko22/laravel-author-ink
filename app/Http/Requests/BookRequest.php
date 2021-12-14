@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Request;
 
 
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -26,7 +25,7 @@ class BookRequest extends FormRequest
      *
      * @return array
      */
-    public function rules(Request $request)
+    public function rules()
     {
         // $id = request('id') ?: 'NULL'; //To identify if request is for add or edit just take autoincremented id parameter form request.
 
@@ -36,14 +35,17 @@ class BookRequest extends FormRequest
 
         switch ($this->method()) {
             case 'POST':
-                error_log('here post');
+                
                 return [
-                    'name' => 'required',
-                    'year' => 'required',
-                    'genre' => 'required',
+                    'name' => 'required|string|max:255',
+                    'year' => 'required|digits:4|integer|min:1900|max:' . (date('Y') + 1),
+                    'genre' => 'required|string|max:255',
+                    'author_id' => 'nullable|integer|exists:authors,id',
                 ];
                 break;
+
             case 'PUT':
+
                 return [
                     'name' => 'nullable',
                     // validation for put method

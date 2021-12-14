@@ -16,7 +16,38 @@ class BookController extends Controller
      */
     public function index()
     {
-        //
+        $books = Book::all();
+
+        return response()->json(
+            data: [
+                'error' => 0,
+                'message' => __('Список книг успешно получен.'),
+                'books' => $books,
+            ],
+            status: 200,
+        );
+    }
+
+    public function booksWithAuthorName()
+    {
+        $books = Book::select(
+            'books.id',
+            'books.name',
+            'books.genre',
+            'books.year',
+            'authors.name as authorName',
+        )
+            ->leftJoin('authors', 'books.author_id', '=', 'authors.id')
+            ->get();
+
+        return response()->json(
+            data: [
+                'error' => 0,
+                'message' => __('Список книг с именами авторов успешно получен.'),
+                'books' => $books,
+            ],
+            status: 200,
+        );
     }
 
     /**
@@ -28,20 +59,22 @@ class BookController extends Controller
     public function store(BookRequest $request)
     {
         $validated = $request->validated();
-        error_log($validated['name']);
-        error_log('storing book');
-        return "Success";
 
-        
+        if (!isset($validated['author_id'])) {
+            $validated['author_id'] = (int) $request->user()->id;
+        }
 
-        // $book = new Book($validated);
-        // $book->save();
+        $book = new Book($validated);
+        $book->save();
 
-        // $response = [
-        //     'success' => true,
-        //     'message' => 'Book is added.',
-        // ];
-        // return response()->json($response);
+        return response()->json(
+            data: [
+                'error' => 0,
+                'message' => __('Книга успешно добавлена.'),
+                'book' => $book,
+            ],
+            status: 200,
+        );
     }
 
     /**
@@ -54,37 +87,24 @@ class BookController extends Controller
     {
         $book = Book::where('id', $id)->first();
 
-        error_log('Some message here.');
-
         if ($book) {
             return response()->json(
                 data: [
                     'error' => 0,
+                    'message' => __('Книга успешно получена.'),
                     'book' => $book,
                 ],
-                status : 200,
+                status: 200,
             );
-        }
-        else {
+        } else {
             return response()->json(
-                data : [
+                data: [
                     'error' => 1,
-                    'errorMessage' => 'Book is not found.'
+                    'message' => __('Книга не найдена.'),
                 ],
-                status : 404,
+                status: 404,
             );
         }
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Book  $book
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Book $book)
-    {
-        //
     }
 
     /**
@@ -94,7 +114,7 @@ class BookController extends Controller
      * @param  \App\Models\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Book $book)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -105,8 +125,28 @@ class BookController extends Controller
      * @param  \App\Models\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Book $book)
+    public function destroy($id)
     {
-        //
+        $book = Book::find($id);
+
+        if ($book) {
+            $book->delete();
+            return response()->json(
+                data: [
+                    'error' => 0,
+                    'message' => __('Книга успешно удалена.'),
+                    'book' => $book,
+                ],
+                status: 200,
+            );
+        } else {
+            return response()->json(
+                data: [
+                    'error' => 1,
+                    'message' => __('Книга не найдена.'),
+                ],
+                status: 404,
+            );
+        }
     }
 }

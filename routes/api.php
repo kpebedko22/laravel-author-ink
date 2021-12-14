@@ -16,11 +16,13 @@ use App\Http\Controllers\BookController;
 |
 */
 
+Route::prefix('v1')->group(function(){
+    require __DIR__ . '/api/v1/books.php';
+    require __DIR__ . '/api/v1/authors.php';
+    require __DIR__ . '/api/v1/authentication.php';
+});
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
-Route::get('/books/{id}', [BookController::class, 'show'])->name('books.show');
-
-Route::post('/books/', [BookController::class, 'store'])->name('books.store');
 

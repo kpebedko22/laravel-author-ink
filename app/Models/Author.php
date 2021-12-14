@@ -24,6 +24,7 @@ class Author extends Authenticatable
 
         'username',
         'birthday',
+        'is_admin',
     ];
 
     /**
