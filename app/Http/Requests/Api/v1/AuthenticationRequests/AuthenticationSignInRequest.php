@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Api\v1\AuthenticationRequests;
 
-use App\Http\Requests\AuthenticationRequest;
+use App\Http\Requests\Api\v1\AuthenticationRequests\AuthenticationRequest;
 
 class AuthenticationSignInRequest extends AuthenticationRequest
 {

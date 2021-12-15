@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\Api\v1\AuthorResources\AuthorResource;
+use App\Http\Resources\Api\v1\AuthorResources\AuthorWithBooksResource;
+use App\Http\Resources\Api\v1\AuthorResources\AuthorWithBooksCountResource;
 use App\Models\Author;
 use Illuminate\Http\Request;
 
@@ -14,17 +17,42 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        //
+        $authors = Author::all();
+
+        return response()->json(
+            data: [
+                'error' => 0,
+                'message' => __('Список авторов успешно получен.'),
+                'authors' => AuthorResource::collection($authors),
+            ],
+            status: 200,
+        );
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    public function authorsWithBooks(){
+        $authors = Author::all();
+
+        return response()->json(
+            data: [
+                'error' => 0,
+                'message' => __('Список авторов с книгами успешно получен.'),
+                'authors' => AuthorWithBooksResource::collection($authors),
+            ],
+            status: 200,
+        );
+    }
+
+    public function authorsWithBooksCount(){
+        $authors = Author::all();
+
+        return response()->json(
+            data: [
+                'error' => 0,
+                'message' => __('Список авторов с количеством книг успешно получен.'),
+                'authors' => AuthorWithBooksCountResource::collection($authors),
+            ],
+            status: 200,
+        );
     }
 
     /**

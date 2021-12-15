@@ -4,15 +4,15 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookController;
 
 Route::middleware(['auth:sanctum',])
-    ->name('books.')
+    ->name('api.v1.books.')
     ->namespace('\App\Http\Controllers')
     ->group(function () {
         Route::post('/books', [BookController::class, 'store'])->name('store');
-        Route::patch('/books/{id}', [BookController::class, 'update'])->name('update')->middleware('can:update,book');
-        Route::delete('/books/{book}', [BookController::class, 'destroy'])->name('destroy')->middleware('can:delete-book,book');
+        Route::patch('/books/{id}', [BookController::class, 'update'])->name('update');
+        Route::delete('/books/{id}', [BookController::class, 'destroy'])->name('destroy');
     });
     
-Route::name('books.')
+Route::name('api.v1.books.')
     ->namespace('\App\Http\Controllers')
     ->group(function(){
         Route::get('/books', [BookController::class, 'index'])->name('index');

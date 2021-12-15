@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Author;
 use App\Models\Book;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Auth\Access\Response;
 
 class BookPolicy
 {
@@ -53,39 +54,23 @@ class BookPolicy
      */
     public function update(Author $author, Book $book)
     {
-        if ($author->is_admin){
-            return true;
-        } else if ($author->id === $book->author_id){
-            return true;
-        } else {
-            return response()->json([
-                'error' => 1,
-                'message' => __('У Вас нет прав на изменение этой книги.'),
-            ]);
-        }
+        return
+            $author->is_admin ||
+            $author->id === $book->author_id;
     }
 
     /**
-     * Determine whether the user can delete the model.
+     * Determine whether the $author can delete the $book.
      *
      * @param  \App\Models\Author  $author
      * @param  \App\Models\Book  $book
-     * @return \Illuminate\Auth\Access\Response|bool
+     * @return bool
      */
     public function delete(Author $author, Book $book)
     {
-        // return true;
-        error_log('deleting policy');
-        if ($author->is_admin){
-            return true;
-        } else if ($author->id === $book->author_id){
-            return true;
-        } else {
-            return response()->json([
-                'error' => 1,
-                'message' => __('У Вас нет прав на удаление этой книги.'),
-            ]);
-        }
+        return
+            $author->is_admin ||
+            $author->id === $book->author_id;
     }
 
     /**
@@ -109,6 +94,5 @@ class BookPolicy
      */
     public function forceDelete(Author $author, Book $book)
     {
-        //
     }
 }

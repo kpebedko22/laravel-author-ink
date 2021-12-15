@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\AuthenticationRequest;
-use App\Http\Requests\AuthenticationSignUpRequest;
-use App\Http\Requests\AuthenticationSignInRequest;
-use Illuminate\Http\Request;
+use App\Http\Requests\Api\v1\AuthenticationRequests\AuthenticationSignUpRequest;
+use App\Http\Requests\Api\v1\AuthenticationRequests\AuthenticationSignInRequest;
+use App\Http\Requests\Api\v1\AuthenticationRequests\AuthenticationSignOutRequest;
+
 use App\Models\Author;
 use Illuminate\Support\Facades\Hash;
 
@@ -57,8 +57,15 @@ class AuthenticationController extends Controller
         );
     }
 
-    public function signOut(AuthenticationRequest $request)
+    public function signOut(AuthenticationSignOutRequest $request)
     {
-        
+        $request->user()->currentAccessToken()->delete();
+        return response()->json(
+            data: [
+                'error' => 0,
+                'message' => __('Выход успешно выполнен.'),
+            ],
+            status: 200,
+        );
     }
 }

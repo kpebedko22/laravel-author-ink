@@ -1,25 +1,14 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Api\v1\BookRequests;
 
 use Illuminate\Foundation\Http\FormRequest;
+
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
 
-class AuthenticationRequest extends FormRequest
+class BookRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    // public function authorize()
-    // {
-    //     return true;
-    // }
-
-
-
     public function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response()->json([
@@ -33,10 +22,8 @@ class AuthenticationRequest extends FormRequest
     {
         return [
             "name.required" => __("Name is required."),
+            'year.required' => __('Year is required.'),
+            'genre.required' => __('Genre is required.'),
         ];
     }
 }
-
-
-
-
