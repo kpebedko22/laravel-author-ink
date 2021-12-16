@@ -14,5 +14,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
+});
+
+Route::prefix('admin')->group(function () {
+    require __DIR__ . '/admin/books.php';
+    require __DIR__ . '/admin/authentication.php';
+    // require __DIR__ . 'admin/authors.php';
 });

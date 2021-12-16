@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthenticationController;
 
 Route::middleware([])
-    ->name('authentication.')
+    ->name('api.v1.authentication.')
     ->namespace('\App\Http\Controllers')
     ->group(function () {
         Route::post('/sign-up', [AuthenticationController::class, 'signUp'])->name('signUp');
@@ -12,7 +12,7 @@ Route::middleware([])
     });
 
 Route::middleware(['auth:sanctum'])
-    ->name('authentication.')
+    ->name('api.v1.authentication.')
     ->namespace('\App\Http\Controllers')
     ->group(function () {
         Route::post('/sign-out', [AuthenticationController::class, 'signOut'])->name('signOut');

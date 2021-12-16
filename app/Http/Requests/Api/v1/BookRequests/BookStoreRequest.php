@@ -2,9 +2,6 @@
 
 namespace App\Http\Requests\Api\v1\BookRequests;
 
-use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Contracts\Validation\Validator;
-
 use App\Http\Requests\Api\v1\BookRequests\BookRequest;
 
 class BookStoreRequest extends BookRequest
