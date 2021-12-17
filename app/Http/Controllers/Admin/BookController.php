@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Book;
-use Illuminate\Http\Request;
 use App\Models\Author;
 use App\Http\Requests\Admin\BookRequests\BookRequest;
 
@@ -38,7 +37,14 @@ class BookController extends Controller
      */
     public function store(BookRequest $request)
     {
-        //
+        $data = $request->toArray();
+        $book = Book::create($data);
+        if ($book)
+            return redirect()->route('admin.books.index');
+        else
+            return redirect()->route('admin.books.create')->withErrors([
+                'error' => __('Something go wrong.'),
+            ]);
     }
 
     /**
@@ -47,7 +53,7 @@ class BookController extends Controller
      * @param  int $bookId
      * @return \Illuminate\Http\Response
      */
-    public function show($bookId)
+    public function show(int $bookId)
     {
         $book = Book::find($bookId);
         if ($book)
@@ -62,13 +68,11 @@ class BookController extends Controller
      * @param  \App\Models\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function edit($bookId)
+    public function edit(int $bookId)
     {
         $book = Book::find($bookId);
-
         if ($book)
             return view('books.create', ['book' => $book, 'authors' => Author::all()]);
-
         return redirect()->route('admin.books.index');
     }
 
@@ -79,9 +83,17 @@ class BookController extends Controller
      * @param  \App\Models\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function update(BookRequest $request, $bookId)
+    public function update(BookRequest $request, int $bookId)
     {
-        //
+        $book = Book::find($bookId);
+        if ($book) {
+            $data = $request->toArray();
+            $book->update($data);
+            return redirect()->route('admin.books.index');
+        } else
+            return redirect()->back()->withErrors([
+                'error' => __('Something go wrong.'),
+            ]);
     }
 
     /**
@@ -90,7 +102,7 @@ class BookController extends Controller
      * @param  \App\Models\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function destroy($bookId)
+    public function destroy(int $bookId)
     {
         $book = Book::find($bookId);
         if ($book)

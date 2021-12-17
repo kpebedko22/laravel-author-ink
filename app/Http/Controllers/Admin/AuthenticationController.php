@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Author;
-use Illuminate\Http\Request;
+use App\Http\Requests\Admin\AuthenticationRequests\AuthenticationRequest;
 use Illuminate\Support\Facades\Auth;
 
 class AuthenticationController extends Controller
@@ -12,41 +12,36 @@ class AuthenticationController extends Controller
 
     public function index()
     {
-        if (Auth::check()) {
+        if (Auth::check()) 
             return redirect()->route('admin.authentication.account');
-        }
+        
         return view('authentication.sign-in');
     }
 
-    public function signIn(Request $request)
+    public function signIn(AuthenticationRequest $request)
     {
-
-        $this->validate($request, [
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
-
-        $validated = [
-            'email' => $request->get('email'),
-            'password' => $request->get('password'),
-        ];
+        $validated = $request->validated();
 
         if (Auth::attempt($validated)) {
+
+            if (!Auth::user()->is_admin)
+                return redirect()->route('admin.authentication.signOut');
+
             return redirect()->route('admin.authentication.account');
-        } 
+        }
         
         return redirect()->back()->withErrors([
-            'email' => __('The provided credentials do not match.'),
+            'credentials' => __('The provided credentials do not match.'),
         ]);
     }
 
-    public function signOut(Request $request)
+    public function signOut()
     {
         Auth::logout();
         return redirect()->route('admin.authentication.index');
     }
 
-    public function account(Request $request)
+    public function account()
     {
         return view('authentication.account', ['username' => Auth::user()->username, ]);
     }

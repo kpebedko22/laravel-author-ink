@@ -12,16 +12,16 @@ class BookRequest extends FormRequest
     public function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response()->json([
-            'success'   => false,
-            'message'   => 'Validation errors',
-            'data'      => $validator->errors()
+            'error' => 1,
+            'message' => __('Validation errors'),
+            'data' => $validator->errors()
         ]));
     }
 
     public function messages()
     {
         return [
-            "name.required" => __("Name is required."),
+            "name.required" => __('Name is required.'),
             'year.required' => __('Year is required.'),
             'genre.required' => __('Genre is required.'),
         ];

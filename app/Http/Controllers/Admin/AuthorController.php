@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Author;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\Admin\AuthorRequests\AuthorRequest;
 
 class AuthorController extends Controller
 {
@@ -35,9 +35,21 @@ class AuthorController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AuthorRequest $request)
     {
-        //
+        $data = $request->toArray();
+        $data['password'] = bcrypt($data['password']);
+        if ($request->has('is_admin'))
+            $data['is_admin'] = true;
+
+        $author = Author::create($data);
+
+        if ($author)
+            return redirect()->route('admin.authors.index');
+        else
+            return redirect()->route('admin.authors.create')->withErrors([
+                'error' => __('Something go wrong.'),
+            ]);
     }
 
     /**
@@ -46,9 +58,13 @@ class AuthorController extends Controller
      * @param  \App\Models\Author  $author
      * @return \Illuminate\Http\Response
      */
-    public function show($authorId)
+    public function show(int $authorId)
     {
-        return view('authors.show', ['author' => Author::find($authorId)]);
+        $author = Author::find($authorId);
+        if ($author)
+            return view('authors.show', ['author' => $author]);
+        else
+            return redirect()->route('admin.authors.index');
     }
 
     /**
@@ -57,13 +73,11 @@ class AuthorController extends Controller
      * @param  \App\Models\Author  $author
      * @return \Illuminate\Http\Response
      */
-    public function edit($authorId)
+    public function edit(int $authorId)
     {
         $author = Author::find($authorId);
-
-        if($author)
+        if ($author)
             return view('authors.create', ['author' => $author]);
-
         return redirect()->route('admin.authors.index');
     }
 
@@ -74,9 +88,25 @@ class AuthorController extends Controller
      * @param  \App\Models\Author  $author
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $authorId)
+    public function update(AuthorRequest $request, int $authorId)
     {
-        //
+        $author = Author::find($authorId);
+        if ($author) {
+            $data = $request->toArray();
+
+            if ($data['password'] != $author->password)
+                $data['password'] = bcrypt($data['password']);
+            if ($request->has('is_admin'))
+                $data['is_admin'] = true;
+            else
+                $data['is_admin'] = false;
+
+            $author->update($data);
+            return redirect()->route('admin.authors.index');
+        } else
+            return redirect()->back()->withErrors([
+                'error' => __('Something go wrong.'),
+            ]);
     }
 
     /**
@@ -85,11 +115,10 @@ class AuthorController extends Controller
      * @param  \App\Models\Author  $author
      * @return \Illuminate\Http\Response
      */
-    public function destroy($authorId)
+    public function destroy(int $authorId)
     {
         $author = Author::find($authorId);
-        // TODO: ограничение - самого себя не удалить?
-        if ($author)// && Auth::user() != $author)
+        if ($author && Auth::user() != $author)
             $author->delete();
         return redirect()->route('admin.authors.index');
     }

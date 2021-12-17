@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\v1;
 
 use App\Models\Book;
 
@@ -11,6 +11,8 @@ use App\Http\Requests\Api\v1\BookRequests\BookUpdateRequest;
 // BookResources
 use App\Http\Resources\Api\v1\BookResources\BookResource;
 use App\Http\Resources\Api\v1\BookResources\BookWithAuthorNameResource;
+
+use App\Http\Controllers\Controller;
 
 class BookController extends Controller
 {
@@ -81,9 +83,9 @@ class BookController extends Controller
      * @param  \App\Models\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(int $bookId)
     {
-        $book = Book::where('id', $id)->first();
+        $book = Book::where('id', $bookId)->first();
 
         if ($book) {
             return response()->json(
@@ -112,9 +114,9 @@ class BookController extends Controller
      * @param  \App\Models\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function update(BookUpdateRequest $request, $id)
+    public function update(BookUpdateRequest $request, int $bookId)
     {
-        $book = Book::find($id);
+        $book = Book::find($bookId);
         $validated = $request->validated();
         
         if ($book) {
@@ -146,9 +148,9 @@ class BookController extends Controller
      * @param  \App\Models\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $bookId)
     {
-        $book = Book::where('id', $id)->first();
+        $book = Book::where('id', $bookId)->first();
 
         if ($book) {
             $this->authorize('delete', [Book::class, $book]);

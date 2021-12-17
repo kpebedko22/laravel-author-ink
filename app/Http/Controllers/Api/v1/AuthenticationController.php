@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Requests\Api\v1\AuthenticationRequests\AuthenticationSignUpRequest;
 use App\Http\Requests\Api\v1\AuthenticationRequests\AuthenticationSignInRequest;
@@ -8,6 +8,7 @@ use App\Http\Requests\Api\v1\AuthenticationRequests\AuthenticationSignOutRequest
 
 use App\Models\Author;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\Controller;
 
 class AuthenticationController extends Controller
 {

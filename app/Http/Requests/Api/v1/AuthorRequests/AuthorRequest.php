@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Requests\Api\v1\AuthenticationRequests;
+namespace App\Http\Requests\Api\v1\AuthorRequests;
 
 use Illuminate\Foundation\Http\FormRequest;
+
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
 
-class AuthenticationRequest extends FormRequest
+class AuthorRequest extends FormRequest
 {
     public function failedValidation(Validator $validator)
     {
@@ -20,7 +21,9 @@ class AuthenticationRequest extends FormRequest
     public function messages()
     {
         return [
-            "name.required" => __("Name is required."),
+            "name.required" => __('Name is required.'),
+            'year.required' => __('Year is required.'),
+            'genre.required' => __('Genre is required.'),
         ];
     }
 }

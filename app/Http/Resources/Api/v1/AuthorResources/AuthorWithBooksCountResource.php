@@ -3,7 +3,6 @@
 namespace App\Http\Resources\Api\v1\AuthorResources;
 
 use App\Http\Resources\Api\v1\AuthorResources\AuthorResource;
-use App\Http\Resources\Api\v1\BookResources\BookResource;
 
 class AuthorWithBooksCountResource extends AuthorResource
 {

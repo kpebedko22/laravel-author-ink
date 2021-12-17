@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\Api\v1\AuthenticationController;
 
 Route::middleware([])
     ->name('api.v1.authentication.')

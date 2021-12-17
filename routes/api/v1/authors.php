@@ -1,15 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthorController;
+use App\Http\Controllers\Api\v1\AuthorController;
 
 Route::middleware(['auth:sanctum',])
     ->name('api.v1.authors.')
     ->namespace('\App\Http\Controllers')
     ->group(function () {
-        Route::post('/authors', [AuthorController::class, 'store'])->name('store');
         Route::patch('/authors/{id}', [AuthorController::class, 'update'])->name('update');
-        Route::delete('/authors/{id}', [AuthorController::class, 'destroy'])->name('destroy');
     });
 
 

@@ -2,14 +2,14 @@
 @section('title', 'Authors & Books')
 @section('content')
 
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-md-12">
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-12">
 
-            @yield('content-inner')
-            
+                @yield('content-inner')
+
+            </div>
         </div>
     </div>
-</div>
 
 @endsection

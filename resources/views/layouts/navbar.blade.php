@@ -15,16 +15,16 @@
                 <li class="nav-item">
                     <a class="nav-link @if (Request::path() === 'admin/account') active @endif" href="{{ route('admin.authentication.account') }}">Admin-panel</a>
                 </li>
-                @auth 
-                <li class="nav-item">
-                    <a class="nav-link @if (Request::path() === 'admin/authors') active @endif" href="{{ route('admin.authors.index') }}">Authors</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link @if (Request::path() === 'admin/books') active @endif" href="{{ route('admin.books.index') }}">Books</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{url('/admin/sign-out')}}">Sign Out</a>
-                </li>
+                @auth
+                    <li class="nav-item">
+                        <a class="nav-link @if (Request::path() === 'admin/authors') active @endif" href="{{ route('admin.authors.index') }}">Authors</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @if (Request::path() === 'admin/books') active @endif" href="{{ route('admin.books.index') }}">Books</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('/admin/sign-out') }}">Sign Out</a>
+                    </li>
                 @endauth
             </ul>
         </div>
