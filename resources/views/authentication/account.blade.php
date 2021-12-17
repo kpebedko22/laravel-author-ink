@@ -1,11 +1,9 @@
 @extends('index')
 
 
-@section('account')
+@section('content-inner')
 
-<h1>Account</h1>
-<h1>{{ $username }}</h1>
-
-<a href="{{ url('admin/sign-out') }}">sign-out</a>
+<h1>Account Page</h1>
+<h1>Hello, {{ $username }}! It's your admin panel.</h1>
 
 @endsection

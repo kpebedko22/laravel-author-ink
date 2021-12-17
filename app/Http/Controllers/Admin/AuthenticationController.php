@@ -33,9 +33,11 @@ class AuthenticationController extends Controller
 
         if (Auth::attempt($validated)) {
             return redirect()->route('admin.authentication.account');
-        } else {
-            return back()->withErrors('error', 'Wrong credentials.');
-        }
+        } 
+        
+        return redirect()->back()->withErrors([
+            'email' => __('The provided credentials do not match.'),
+        ]);
     }
 
     public function signOut(Request $request)

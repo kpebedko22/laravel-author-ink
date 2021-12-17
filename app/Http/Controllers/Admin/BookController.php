@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Api\v1\BookResources\BookWithAuthorNameResource;
 use App\Models\Book;
 use Illuminate\Http\Request;
+use App\Models\Author;
+use App\Http\Requests\Admin\BookRequests\BookRequest;
 
 class BookController extends Controller
 {
@@ -16,7 +17,7 @@ class BookController extends Controller
      */
     public function index()
     {
-        return view('books', ['books' => Book::all()]);
+        return view('books.index', ['books' => Book::all()]);
     }
 
     /**
@@ -26,7 +27,7 @@ class BookController extends Controller
      */
     public function create()
     {
-        //
+        return view('books.create', ['book' => null, 'authors' => Author::all()]);
     }
 
     /**
@@ -35,7 +36,7 @@ class BookController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(BookRequest $request)
     {
         //
     }
@@ -43,12 +44,16 @@ class BookController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Book  $book
+     * @param  int $bookId
      * @return \Illuminate\Http\Response
      */
-    public function show(Book $book)
+    public function show($bookId)
     {
-        //
+        $book = Book::find($bookId);
+        if ($book)
+            return view('books.show', ['book' => $book]);
+        else
+            return redirect()->route('admin.books.index');
     }
 
     /**
@@ -57,9 +62,14 @@ class BookController extends Controller
      * @param  \App\Models\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function edit(Book $book)
+    public function edit($bookId)
     {
-        //
+        $book = Book::find($bookId);
+
+        if ($book)
+            return view('books.create', ['book' => $book, 'authors' => Author::all()]);
+
+        return redirect()->route('admin.books.index');
     }
 
     /**
@@ -69,7 +79,7 @@ class BookController extends Controller
      * @param  \App\Models\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Book $book)
+    public function update(BookRequest $request, $bookId)
     {
         //
     }
@@ -80,8 +90,11 @@ class BookController extends Controller
      * @param  \App\Models\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Book $book)
+    public function destroy($bookId)
     {
-        //
+        $book = Book::find($bookId);
+        if ($book)
+            $book->delete();
+        return redirect()->route('admin.books.index');
     }
 }

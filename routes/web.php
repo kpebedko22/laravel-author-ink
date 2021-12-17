@@ -19,6 +19,6 @@ Route::get('/', function () {
 
 Route::prefix('admin')->group(function () {
     require __DIR__ . '/admin/books.php';
+    require __DIR__ . '/admin/authors.php';
     require __DIR__ . '/admin/authentication.php';
-    // require __DIR__ . 'admin/authors.php';
 });
