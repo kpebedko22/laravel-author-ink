@@ -6,13 +6,15 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     *
-     * @return void
-     */
-    public function run()
+    const SEEDERS = [
+        BooksTableSeeder::class => 'Books are created!',
+    ];
+
+    public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        foreach (self::SEEDERS as $seeder => $message) {
+            $this->call($seeder);
+            $this->command->info($message);
+        }
     }
 }

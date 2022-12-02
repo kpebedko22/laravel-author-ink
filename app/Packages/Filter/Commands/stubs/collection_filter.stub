@@ -1,0 +1,10 @@
+<?php
+
+namespace DummyNamespace;
+
+use App\Packages\Filter\CollectionFilter;
+
+final class DummyClass extends CollectionFilter
+{
+
+}

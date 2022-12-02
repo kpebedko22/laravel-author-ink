@@ -4,7 +4,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | View Storage Paths
+    | Show Storage Paths
     |--------------------------------------------------------------------------
     |
     | Most templating systems load templates from disk. Here you may specify
@@ -19,7 +19,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Compiled View Path
+    | Compiled Show Path
     |--------------------------------------------------------------------------
     |
     | This option determines where all the compiled Blade templates will be

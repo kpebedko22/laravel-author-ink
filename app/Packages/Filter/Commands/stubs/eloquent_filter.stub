@@ -1,0 +1,10 @@
+<?php
+
+namespace DummyNamespace;
+
+use App\Packages\Filter\EloquentFilter;
+
+final class DummyClass extends EloquentFilter
+{
+
+}
