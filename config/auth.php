@@ -40,6 +40,11 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
     ],
 
     /*
@@ -108,4 +113,10 @@ return [
 
     'password_timeout' => 10800,
 
+    'admin' => [
+        'password' => [
+            'min' => 8,
+            'max' => 255,
+        ]
+    ]
 ];

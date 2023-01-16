@@ -7,7 +7,7 @@ use Cviebrock\EloquentSluggable\Services\SlugService;
 
 class BooksTableSeeder extends BaseSeeder
 {
-    protected int $numItems = 10000;
+    protected int $numItems = 10;
 
     public function run()
     {

@@ -12,8 +12,8 @@ Route::prefix('admin')
 
     ])
     ->group(function () {
-        require __DIR__ . '/web/admin/auth.php';
-        require __DIR__ . '/web/admin/books.php';
+        require __DIR__ . '/admin/auth.php';
+        require __DIR__ . '/admin/books.php';
     });
 
 Route::prefix('')

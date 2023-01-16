@@ -5,10 +5,10 @@ use App\Http\Controllers\Admin\Books\BookController;
 Route::prefix('books')
     ->name('books.')
     ->middleware([
-
+        'auth:admin'
     ])
-    ->where([
-        'book_id' => '[0-9]+'
+    ->whereNumber([
+        'book_id'
     ])
     ->group(function () {
         Route::get('', [BookController::class, 'index'])
