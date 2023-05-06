@@ -7,7 +7,9 @@ use Illuminate\Database\Seeder;
 class DatabaseSeeder extends Seeder
 {
     const SEEDERS = [
+        UsersSeeder::class => 'Users are created!',
         BooksTableSeeder::class => 'Books are created!',
+        GenresTableSeeder::class => 'Genres are created!',
     ];
 
     public function run(): void

@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Services\Common\Filters\QueryFilter;
 use App\Traits\Models\Filterable;
 use App\Traits\Models\HasOrder;
-use Cviebrock\EloquentSluggable\Sluggable;
 use Eloquent;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,6 +15,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use \Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use \Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Support\Carbon;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 
 /**
  * @property int $id
@@ -40,21 +41,13 @@ class Book extends Model
         Filterable,
         HasOrder,
         SoftDeletes,
-        Sluggable;
+        HasSlug;
 
     protected $fillable = [
         'author_id',
         'title',
+        'slug',
     ];
-
-    public function sluggable(): array
-    {
-        return [
-            'slug' => [
-                'source' => 'title'
-            ]
-        ];
-    }
 
     public function author(): BelongsTo
     {
@@ -63,13 +56,23 @@ class Book extends Model
 
     public function genres(): BelongsToMany
     {
-        return $this->belongsToMany(
-            Genre::class,
-            'books_genres',
-            'book_id',
-            'genre_id',
-            'id',
-            'id'
-        );
+        return $this
+            ->belongsToMany(
+                Genre::class,
+                'book_genre',
+                'book_id',
+                'genre_id',
+                'id',
+                'id'
+            )->withPivot([
+                'order'
+            ]);
+    }
+
+    public function getSlugOptions(): SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('title')
+            ->saveSlugsTo('slug');
     }
 }

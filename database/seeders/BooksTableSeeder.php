@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Book;
-use Cviebrock\EloquentSluggable\Services\SlugService;
+use App\Models\User;
 
 class BooksTableSeeder extends BaseSeeder
 {
@@ -14,9 +14,11 @@ class BooksTableSeeder extends BaseSeeder
         $data = $this->generateData(function () {
 
             $title = $this->faker->realText(40);
-            $slug = SlugService::createSlug(Book::class, 'slug', $title);
+            ($book = new Book)->generateSlug();
+            $slug = $book;
 
             return [
+                'author_id' => User::inRandomOrder()->value('id'),
                 'title' => $title,
                 'slug' => $slug,
                 'description' => $this->faker->realText(100)
