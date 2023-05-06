@@ -1,0 +1,49 @@
+services:
+    app:
+        build:
+            args:
+                user: library_user
+                uid: 1000
+            context: ./
+            dockerfile: Dockerfile
+        image: library
+        container_name: library-app
+        working_dir: /var/www/
+        volumes:
+            - ./:/var/www
+        networks:
+            - library
+    mysql:
+        image: mysql:8.0.29
+        container_name: library-mysql
+        ports:
+            - 3306:3306
+        environment:
+            MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_ROOT_HOST: "%"
+            MYSQL_DATABASE: '${DB_DATABASE}'
+            MYSQL_USER: '${DB_USERNAME}'
+            MYSQL_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_ALLOW_EMPTY_PASSWORD: 1
+            SERVICE_TAGS: dev
+            SERVICE_NAME: mysql
+        volumes:
+            - 'mysql:/var/lib/mysql'
+        networks:
+            - library
+    nginx:
+        image: nginx:alpine
+        container_name: library-nginx
+        ports:
+            - 8000:80
+        volumes:
+            - ./:/var/www
+            - ./docker-compose/nginx:/etc/nginx/conf.d/
+        networks:
+            - library
+networks:
+    library:
+        driver: bridge
+volumes:
+    mysql:
+        driver: local
