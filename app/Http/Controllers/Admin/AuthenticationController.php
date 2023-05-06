@@ -3,18 +3,16 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Author;
 use App\Http\Requests\Admin\AuthenticationRequests\AuthenticationRequest;
 use Illuminate\Support\Facades\Auth;
 
 class AuthenticationController extends Controller
 {
-
     public function index()
     {
-        if (Auth::check()) 
+        if (Auth::check())
             return redirect()->route('admin.authentication.account');
-        
+
         return view('authentication.sign-in');
     }
 
@@ -29,7 +27,7 @@ class AuthenticationController extends Controller
 
             return redirect()->route('admin.authentication.account');
         }
-        
+
         return redirect()->back()->withErrors([
             'credentials' => __('The provided credentials do not match.'),
         ]);
@@ -43,6 +41,6 @@ class AuthenticationController extends Controller
 
     public function account()
     {
-        return view('authentication.account', ['username' => Auth::user()->username, ]);
+        return view('authentication.account', ['username' => Auth::user()->username,]);
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AuthorController;
+use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth'])
     ->name('admin.authors.')

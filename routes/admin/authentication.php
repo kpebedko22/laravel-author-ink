@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AuthenticationController;
+use Illuminate\Support\Facades\Route;
 
 Route::middleware([])
     ->name('admin.authentication.')

@@ -3,38 +3,23 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\AuthorRequests\AuthorRequest;
 use App\Models\Author;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\Admin\AuthorRequests\AuthorRequest;
 
 class AuthorController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         return view('authors.index', ['authors' => Author::all()]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         return view('authors.create', ['author' => null]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(AuthorRequest $request)
     {
         $data = $request->toArray();
@@ -52,12 +37,6 @@ class AuthorController extends Controller
             ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Author  $author
-     * @return \Illuminate\Http\Response
-     */
     public function show(int $authorId)
     {
         $author = Author::find($authorId);
@@ -67,12 +46,6 @@ class AuthorController extends Controller
             return redirect()->route('admin.authors.index');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Author  $author
-     * @return \Illuminate\Http\Response
-     */
     public function edit(int $authorId)
     {
         $author = Author::find($authorId);
@@ -81,13 +54,6 @@ class AuthorController extends Controller
         return redirect()->route('admin.authors.index');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Author  $author
-     * @return \Illuminate\Http\Response
-     */
     public function update(AuthorRequest $request, int $authorId)
     {
         $author = Author::find($authorId);
@@ -109,12 +75,6 @@ class AuthorController extends Controller
             ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Author  $author
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(int $authorId)
     {
         $author = Author::find($authorId);

@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\Api\v1;
 
-use App\Http\Requests\Api\v1\AuthenticationRequests\AuthenticationSignUpRequest;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\v1\AuthenticationRequests\AuthenticationSignInRequest;
 use App\Http\Requests\Api\v1\AuthenticationRequests\AuthenticationSignOutRequest;
-
+use App\Http\Requests\Api\v1\AuthenticationRequests\AuthenticationSignUpRequest;
 use App\Models\Author;
 use Illuminate\Support\Facades\Hash;
-use App\Http\Controllers\Controller;
 
 class AuthenticationController extends Controller
 {
@@ -35,7 +34,7 @@ class AuthenticationController extends Controller
         $validated = $request->validated();
 
         $author = Author::where('email', $validated['email'])->first();
-        
+
         if (!$author || !Hash::check($validated['password'], $author->password)) {
             return response()->json(
                 data: [

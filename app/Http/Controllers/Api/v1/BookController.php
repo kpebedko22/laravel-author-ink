@@ -118,7 +118,7 @@ class BookController extends Controller
     {
         $book = Book::find($bookId);
         $validated = $request->validated();
-        
+
         if ($book) {
             $this->authorize('update', [Book::class, $book]);
 

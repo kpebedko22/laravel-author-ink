@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests\Api\v1\AuthenticationRequests;
 
-use App\Http\Requests\Api\v1\AuthenticationRequests\AuthenticationRequest;
-
 class AuthenticationSignInRequest extends AuthenticationRequest
 {
 

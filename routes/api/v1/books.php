@@ -11,7 +11,7 @@ Route::middleware(['auth:sanctum',])
         Route::patch('/books/{bookId}', [BookController::class, 'update'])->name('update');
         Route::delete('/books/{bookId}', [BookController::class, 'destroy'])->name('destroy');
     });
-    
+
 Route::name('api.v1.books.')
     ->namespace('\App\Http\Controllers')
     ->group(function(){
