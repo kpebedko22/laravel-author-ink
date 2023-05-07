@@ -23,12 +23,25 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $e)
     {
-        if ($e instanceof AuthorizationException) {
-            return response()->json([
-                'error' => 1,
-                'message' => __('У Вас нет доступа для выполнения этого действия.'),
-            ], 403);
+        if ($request->is('admin*')) {
+            $class = get_class($e);
+
+//            switch ($class) {
+//                case ValidationException::class:
+//                    return parent::render($request, $e);
+//                default:
+//                    break;
+//            }
+        } elseif ($request->is('api*')) {
+
+            if ($e instanceof AuthorizationException) {
+                return response()->json([
+                    'error' => 1,
+                    'message' => __('У Вас нет доступа для выполнения этого действия.'),
+                ], 403);
+            }
         }
+
         return parent::render($request, $e);
     }
 }

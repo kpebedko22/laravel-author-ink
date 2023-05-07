@@ -2,13 +2,21 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Eloquent;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property int $id
+ * @property int $author_id
+ * @property string $name
+ * @property string $year
+ * @property string $genre
+ *
+ * @mixin Eloquent
+ */
 class Book extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'name',
         'year',
@@ -16,7 +24,7 @@ class Book extends Model
         'author_id',
     ];
 
-    public function Author()
+    public function Author(): BelongsTo
     {
         return $this->belongsTo(Author::class, 'author_id', 'id');
     }

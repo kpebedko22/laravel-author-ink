@@ -3,9 +3,9 @@
 
 @section('content-inner')
 
-    <x-validation-errors :errors="$errors" />
+    <x-validation-errors :errors="$errors"/>
 
-    <form method="POST" action="{{ route('admin.authentication.signIn') }}">
+    <form method="POST" action="{{ route('admin.auth.logout') }}">
         @csrf
         <div class="mb-3">
             <label for="email" class="form-label">Email address</label>

@@ -6,32 +6,29 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBooksTable extends Migration
-{
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
+return new class extends Migration {
     public function up()
     {
         Schema::create('books', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
-            $table->string('name', 255);
+            $table->foreignId('author_id')
+                ->references('id')
+                ->on('authors')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+            $table->string('name');
             $table->year('year');
-            $table->string('genre', 255);
-            $table->foreignId('author_id')->references('id')->on('authors')->onUpdate('cascade')->onDelete('cascade');
+            $table->string('genre');
+            $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
+        Schema::table('books', function (Blueprint $table) {
+            $table->dropForeign(['author_id']);
+        });
+
         Schema::dropIfExists('books');
     }
-}
+};
