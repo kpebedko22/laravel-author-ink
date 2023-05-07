@@ -18,6 +18,8 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $username
  * @property bool $is_admin
  *
+ * @property-read int $books_count
+ *
  * @mixin Eloquent
  */
 class Author extends Authenticatable

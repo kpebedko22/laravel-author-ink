@@ -16,7 +16,11 @@
 </head>
 <body>
 @include('admin.layouts.partials.navbar')
-@yield('content')
+<div class="container p-5">
+{{--    <div class="row">--}}
+        @yield('content')
+{{--    </div>--}}
+</div>
 </body>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"

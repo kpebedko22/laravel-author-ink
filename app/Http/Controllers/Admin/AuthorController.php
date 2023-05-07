@@ -3,83 +3,60 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\AuthorRequests\AuthorRequest;
+use App\Http\Requests\Admin\Authors\AuthorRequest;
+use App\Http\Requests\Admin\Authors\AuthorUpsertRequest;
 use App\Models\Author;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 
 class AuthorController extends Controller
 {
-    public function index()
+    public function index(): View
     {
-        return view('authors.index', ['authors' => Author::all()]);
+        return view('admin.authors.index', [
+            'authors' => Author::withCount('books')->get()
+        ]);
     }
 
-    public function create()
+    public function create(): View
     {
-        return view('authors.create', ['author' => null]);
+        return view('admin.authors.create', ['model' => new Author()]);
     }
 
-
-    public function store(AuthorRequest $request)
+    public function store(AuthorUpsertRequest $request): RedirectResponse
     {
-        $data = $request->toArray();
-        $data['password'] = bcrypt($data['password']);
-        if ($request->has('is_admin'))
-            $data['is_admin'] = true;
+        $author = Author::create($request->getData());
 
-        $author = Author::create($data);
-
-        if ($author)
-            return redirect()->route('admin.authors.index');
-        else
-            return redirect()->route('admin.authors.create')->withErrors([
-                'error' => __('Something go wrong.'),
-            ]);
+        return redirect()->route('admin.authors.show', ['author_id' => $author->id]);
     }
 
-    public function show(int $authorId)
+    public function show(AuthorRequest $request): View
     {
-        $author = Author::find($authorId);
-        if ($author)
-            return view('authors.show', ['author' => $author]);
-        else
-            return redirect()->route('admin.authors.index');
+        return view('admin.authors.show', ['model' => $request->getAuthor()]);
     }
 
-    public function edit(int $authorId)
+    public function edit(AuthorRequest $request): View
     {
-        $author = Author::find($authorId);
-        if ($author)
-            return view('authors.create', ['author' => $author]);
-        return redirect()->route('admin.authors.index');
+        return view('admin.authors.create', ['model' => $request->getAuthor()]);
     }
 
-    public function update(AuthorRequest $request, int $authorId)
+    public function update(AuthorUpsertRequest $request): RedirectResponse
     {
-        $author = Author::find($authorId);
-        if ($author) {
-            $data = $request->toArray();
+        $author = $request->getAuthor();
+        $author->update($request->getData());
 
-            if ($data['password'] != $author->password)
-                $data['password'] = bcrypt($data['password']);
-            if ($request->has('is_admin'))
-                $data['is_admin'] = true;
-            else
-                $data['is_admin'] = false;
-
-            $author->update($data);
-            return redirect()->route('admin.authors.index');
-        } else
-            return redirect()->back()->withErrors([
-                'error' => __('Something go wrong.'),
-            ]);
+        return redirect()->route('admin.authors.show', ['author_id' => $author->id]);
     }
 
-    public function destroy(int $authorId)
+    public function destroy(AuthorRequest $request): RedirectResponse
     {
-        $author = Author::find($authorId);
-        if ($author && Auth::user() != $author)
+        $author = $request->getAuthor();
+
+        if (Auth::id() != $author->id) {
             $author->delete();
+        }
+
         return redirect()->route('admin.authors.index');
     }
 }

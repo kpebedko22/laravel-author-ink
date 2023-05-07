@@ -16,16 +16,16 @@ Route::middleware(['auth'])
         Route::post('', [AuthorController::class, 'store'])
             ->name('store');
 
-        Route::get('/{authorId}', [AuthorController::class, 'show'])
+        Route::get('/{author_id}', [AuthorController::class, 'show'])
             ->name('show');
 
-        Route::get('/{authorId}/edit', [AuthorController::class, 'edit'])
+        Route::get('/{author_id}/edit', [AuthorController::class, 'edit'])
             ->name('edit');
 
-        Route::put('/{authorId}', [AuthorController::class, 'update'])
+        Route::put('/{author_id}', [AuthorController::class, 'update'])
             ->name('update');
 
-        Route::delete('/{authorId}', [AuthorController::class, 'destroy'])
+        Route::delete('/{author_id}', [AuthorController::class, 'destroy'])
             ->name('destroy');
 
     });
