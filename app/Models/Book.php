@@ -13,6 +13,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $year
  * @property string $genre
  *
+ * @property-read Author $author
+ *
  * @mixin Eloquent
  */
 class Book extends Model
@@ -24,7 +26,7 @@ class Book extends Model
         'author_id',
     ];
 
-    public function Author(): BelongsTo
+    public function author(): BelongsTo|Author
     {
         return $this->belongsTo(Author::class, 'author_id', 'id');
     }

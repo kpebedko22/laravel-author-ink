@@ -5,8 +5,10 @@ namespace App\Models;
 use Eloquent;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
 
@@ -18,6 +20,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $username
  * @property bool $is_admin
  *
+ * @property-read Collection<Book> $books
  * @property-read int $books_count
  *
  * @mixin Eloquent
@@ -46,7 +49,7 @@ class Author extends Authenticatable
         'is_admin' => 'bool',
     ];
 
-    public function Books()
+    public function books(): HasMany|Book
     {
         return $this->hasMany(Book::class, 'author_id', 'id');
     }

@@ -28,7 +28,7 @@ class AuthorController extends Controller
     {
         $author = Author::create($request->getData());
 
-        return redirect()->route('admin.authors.show', ['author_id' => $author->id]);
+        return redirect()->route('admin.authors.show', $author->id);
     }
 
     public function show(AuthorRequest $request): View

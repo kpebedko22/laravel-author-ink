@@ -3,8 +3,7 @@
 use App\Http\Controllers\Admin\BookController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth'])
-    ->name('books.')
+Route::name('books.')
     ->prefix('books')
     ->group(function () {
         Route::get('', [BookController::class, 'index'])
@@ -16,16 +15,15 @@ Route::middleware(['auth'])
         Route::post('', [BookController::class, 'store'])
             ->name('store');
 
-        Route::get('/{bookId}', [BookController::class, 'show'])
+        Route::get('/{book_id}', [BookController::class, 'show'])
             ->name('show');
 
-        Route::get('/{bookId}/edit', [BookController::class, 'edit'])
+        Route::get('/{book_id}/edit', [BookController::class, 'edit'])
             ->name('edit');
 
-        Route::put('/{bookId}', [BookController::class, 'update'])
+        Route::put('/{book_id}', [BookController::class, 'update'])
             ->name('update');
 
-        Route::delete('/{bookId}', [BookController::class, 'destroy'])
+        Route::delete('/{book_id}', [BookController::class, 'destroy'])
             ->name('destroy');
-
     });

@@ -3,110 +3,60 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Book;
+use App\Http\Requests\Admin\Books\BookRequest;
+use App\Http\Requests\Admin\Books\BookUpsertRequest;
 use App\Models\Author;
-use App\Http\Requests\Admin\BookRequests\BookRequest;
+use App\Models\Book;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class BookController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(): View
     {
-        return view('books.index', ['books' => Book::all()]);
+        return view('admin.books.index', ['books' => Book::all()]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function create(): View
     {
-        return view('books.create', ['book' => null, 'authors' => Author::all()]);
+        return view('admin.books.create', [
+            'model' => new Book(),
+            'authors' => Author::pluck('name', 'id'),
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(BookRequest $request)
+    public function store(BookUpsertRequest $request): RedirectResponse
     {
-        $data = $request->toArray();
-        $book = Book::create($data);
-        if ($book)
-            return redirect()->route('admin.books.index');
-        else
-            return redirect()->route('admin.books.create')->withErrors([
-                'error' => __('Something go wrong.'),
-            ]);
+        $book = Book::create($request->getData());
+
+        return redirect()->route('admin.books.show', $book->id);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $bookId
-     * @return \Illuminate\Http\Response
-     */
-    public function show(int $bookId)
+    public function show(BookRequest $request): View
     {
-        $book = Book::find($bookId);
-        if ($book)
-            return view('books.show', ['book' => $book]);
-        else
-            return redirect()->route('admin.books.index');
+        return view('admin.books.show', ['model' => $request->getBook()]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Book  $book
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(int $bookId)
+    public function edit(BookRequest $request): View
     {
-        $book = Book::find($bookId);
-        if ($book)
-            return view('books.create', ['book' => $book, 'authors' => Author::all()]);
-        return redirect()->route('admin.books.index');
+        return view('admin.books.create', [
+            'model' => $request->getBook(),
+            'authors' => Author::pluck('name', 'id'),
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Book  $book
-     * @return \Illuminate\Http\Response
-     */
-    public function update(BookRequest $request, int $bookId)
+    public function update(BookUpsertRequest $request): RedirectResponse
     {
-        $book = Book::find($bookId);
-        if ($book) {
-            $data = $request->toArray();
-            $book->update($data);
-            return redirect()->route('admin.books.index');
-        } else
-            return redirect()->back()->withErrors([
-                'error' => __('Something go wrong.'),
-            ]);
+        $book = $request->getBook();
+        $book->update($request->getData());
+
+        return redirect()->route('admin.books.show', $book->id);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Book  $book
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(int $bookId)
+    public function destroy(BookRequest $request): RedirectResponse
     {
-        $book = Book::find($bookId);
-        if ($book)
-            $book->delete();
+        $request->getBook()->delete();
+
         return redirect()->route('admin.books.index');
     }
 }

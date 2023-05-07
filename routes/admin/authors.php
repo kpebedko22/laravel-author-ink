@@ -3,8 +3,7 @@
 use App\Http\Controllers\Admin\AuthorController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth'])
-    ->name('authors.')
+Route::name('authors.')
     ->prefix('authors')
     ->group(function () {
         Route::get('', [AuthorController::class, 'index'])
