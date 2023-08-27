@@ -1,48 +1,67 @@
 services:
-    app:
+    library-fpm:
         build:
             args:
                 user: library_user
                 uid: 1000
             context: ./
-            dockerfile: Dockerfile
+            dockerfile: build/fpm/Dockerfile
         image: library
-        container_name: library-app
+        container_name: library-fpm
         working_dir: /var/www/
         volumes:
             - ./:/var/www
         networks:
             - library
-    mysql:
+    library-mysql:
         image: mysql:8.0.29
         container_name: library-mysql
         ports:
-            - 3306:3306
+            - '127.0.0.1:${DB_PORT}:3306'
         environment:
             MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
             MYSQL_ROOT_HOST: "%"
             MYSQL_DATABASE: '${DB_DATABASE}'
             MYSQL_USER: '${DB_USERNAME}'
             MYSQL_PASSWORD: '${DB_PASSWORD}'
-            MYSQL_ALLOW_EMPTY_PASSWORD: 1
             SERVICE_TAGS: dev
             SERVICE_NAME: mysql
         volumes:
-            - 'mysql:/var/lib/mysql'
+            - mysql:/var/lib/mysql
         networks:
             - library
-    nginx:
+    library-nginx:
         image: nginx:alpine
         container_name: library-nginx
         ports:
             - 8000:80
         volumes:
             - ./:/var/www
-            - ./docker-compose/nginx:/etc/nginx/conf.d/
+            - ./build/nginx:/etc/nginx/conf.d/
+        networks:
+            - library
+        depends_on: [ library-fpm ]
+    library-redis:
+        image: redis:alpine
+        container_name: library-redis
+        networks:
+            - library
+    library-npm:
+        image: node:alpine3.17
+        container_name: library-npm
+        working_dir: /var/www
+        entrypoint:
+            - /bin/sh
+            - ./build/npm/entrypoint.sh
+        volumes:
+            - ./:/var/www
+        ports:
+            - '127.0.0.1:5173:5173'
         networks:
             - library
 networks:
     library:
+        name: library
         driver: bridge
 volumes:
     mysql:

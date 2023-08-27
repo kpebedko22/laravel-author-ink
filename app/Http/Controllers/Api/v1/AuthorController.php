@@ -2,105 +2,41 @@
 
 namespace App\Http\Controllers\Api\v1;
 
-use App\Http\Resources\Api\v1\AuthorResources\AuthorResource;
-use App\Http\Resources\Api\v1\AuthorResources\AuthorWithBooksResource;
-use App\Http\Resources\Api\v1\AuthorResources\AuthorWithBooksCountResource;
-use App\Models\Author;
-use App\Http\Requests\Api\v1\AuthorRequests\AuthorUpdateRequest;
-use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\v1\Authors\AuthorRequest;
+use App\Http\Resources\Api\v1\Authors\AuthorCollection;
+use App\Http\Resources\Api\v1\Authors\AuthorResource;
+use App\Repositories\AuthorRepository;
+use Illuminate\Http\JsonResponse;
 
-class AuthorController extends Controller
+class AuthorController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(): JsonResponse
     {
-        $authors = Author::all();
-
-        return response()->json(
-            data: [
-                'error' => 0,
-                'message' => __('Список авторов успешно получен.'),
-                'authors' => AuthorResource::collection($authors),
-            ],
-            status: 200,
+        return $this->successResponse(
+            'author.index',
+            (new AuthorCollection(
+                AuthorResource::collection(AuthorRepository::index())
+            ))->toArray(request())
         );
     }
 
-    public function authorsWithBooks()
+    public function statistic(): JsonResponse
     {
-        $authors = Author::all();
-
-        return response()->json(
-            data: [
-                'error' => 0,
-                'message' => __('Список авторов с книгами успешно получен.'),
-                'authors' => AuthorWithBooksResource::collection($authors),
-            ],
-            status: 200,
+        return $this->successResponse(
+            'author.statistic',
+            (new AuthorCollection(
+                AuthorResource::collection(AuthorRepository::statistic())
+            ))->toArray(request())
         );
     }
 
-    public function authorsWithBooksCount()
+    public function show(AuthorRequest $request): JsonResponse
     {
-        $authors = Author::all();
-
-        return response()->json(
-            data: [
-                'error' => 0,
-                'message' => __('Список авторов с количеством книг успешно получен.'),
-                'authors' => AuthorWithBooksCountResource::collection($authors),
-            ],
-            status: 200,
-        );
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $authorId
-     * @return \Illuminate\Http\Response
-     */
-    public function show(int $authorId)
-    {
-        $author = Author::find($authorId);
-        if ($author)
-            return response()->json(
-                data: [
-                    'error' => 0,
-                    'message' => __('Информация об авторе успешно получена.'),
-                    'author' => new AuthorResource($author),
-                ],
-                status: 200,
-            );
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $authorId
-     * @return \Illuminate\Http\Response
-     */
-    public function update(AuthorUpdateRequest $request, int $authorId)
-    {
-        $validated = $request->validated();
-
-        $author = Author::find($authorId);
-
-        if ($author)
-            $author->update($validated);
-
-        return response()->json(
-            data : [
-                'error' => 0,
-                'message' => __('Информация успешно обновлена.'),
-                'author' => new AuthorResource($author),
-            ],
-            status: 200,
+        return $this->successResponse(
+            'author.show',
+            (new AuthorResource(
+                AuthorRepository::show($request->getAuthorId())
+            ))->toArray($request)
         );
     }
 }

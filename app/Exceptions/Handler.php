@@ -2,8 +2,11 @@
 
 namespace App\Exceptions;
 
-use Illuminate\Auth\Access\AuthorizationException;
+use App\Http\Responses\Api\v1\JsonErrorResponse;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -23,25 +26,36 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $e)
     {
-        if ($request->is('admin*')) {
-            $class = get_class($e);
+        return match (true) {
+            $request->is('api*') => $this->renderApi($request, $e),
+            default => parent::render($request, $e)
+        };
+    }
 
-//            switch ($class) {
-//                case ValidationException::class:
-//                    return parent::render($request, $e);
-//                default:
-//                    break;
-//            }
-        } elseif ($request->is('api*')) {
+    public function renderApi($request, Throwable $e): JsonResponse
+    {
+        $version = match (true) {
+            $request->is('api/v1*') => 'v1',
+            default => '',
+        };
 
-            if ($e instanceof AuthorizationException) {
-                return response()->json([
-                    'error' => 1,
-                    'message' => __('У Вас нет доступа для выполнения этого действия.'),
-                ], 403);
-            }
+        $className = get_class($e);
+
+        switch ($className) {
+            case  NotFoundHttpException::class:
+            case ModelNotFoundException::class:
+                $response = new JsonErrorResponse(__("api/$version/exception.not_found"));
+                $status = 404;
+                break;
+            default:
+                $response = new JsonErrorResponse($e->getMessage());
+                $status = 500;
+                break;
         }
 
-        return parent::render($request, $e);
+        return response()->json(
+            $response,
+            $status
+        );
     }
 }

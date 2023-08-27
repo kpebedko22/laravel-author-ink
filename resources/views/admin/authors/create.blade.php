@@ -4,7 +4,7 @@
      */
 @endphp
 
-@extends('admin.layouts.app')
+@extends('layouts.admin.app')
 
 @section('title')
     {{'Create author'}}

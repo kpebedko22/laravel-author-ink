@@ -8,14 +8,17 @@ use App\Http\Requests\Admin\Authors\AuthorUpsertRequest;
 use App\Models\Author;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AuthorController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
         return view('admin.authors.index', [
-            'authors' => Author::withCount('books')->get()
+            'authors' => Author::withCount('books')
+                ->when($request->input('q'), fn($q) => $q->where('name', 'like', '%' . $request->input('q') . '%'))
+                ->paginate(10)
         ]);
     }
 

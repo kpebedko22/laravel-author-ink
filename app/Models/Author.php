@@ -19,6 +19,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $password
  * @property string $username
  * @property bool $is_admin
+ * @property string $birthday
  *
  * @property-read Collection<Book> $books
  * @property-read int $books_count
@@ -27,17 +28,11 @@ use Laravel\Sanctum\HasApiTokens;
  */
 class Author extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens,
+        HasFactory,
+        Notifiable;
 
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-
-        'username',
-        'birthday',
-        'is_admin',
-    ];
+    protected $guarded = ['id'];
 
     protected $hidden = [
         'password',
