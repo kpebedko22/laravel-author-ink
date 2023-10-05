@@ -5,12 +5,13 @@
 @endsection
 
 @section('content')
-    <h1 class="text-3xl text-black pb-6">{{ 'Authors' }}</h1>
-
-    <div class="pb-3">
-        <x-admin.action :url="route('admin.authors.create')">
-            Create new author
-        </x-admin.action>
+    <div class="flex justify-between">
+        <h1 class="text-3xl text-black pb-6">{{ 'Authors' }}</h1>
+        <div class="">
+            <x-admin.action :url="route('admin.authors.create')"
+                            class="bg-primary-600 hover:bg-primary-500 text-dark-800 font-semibold"
+            >{{ 'Create new author' }}</x-admin.action>
+        </div>
     </div>
 
     <div class="shadow-md bg-white rounded-lg border border-gray-300">
@@ -33,9 +34,9 @@
         <div class="overflow-x-auto">
             <x-admin.table>
                 <x-slot:header>
-                    <x-admin.table.heading>Name</x-admin.table.heading>
-                    <x-admin.table.heading>Email</x-admin.table.heading>
-                    <x-admin.table.heading>Books count</x-admin.table.heading>
+                    <x-admin.table.heading>{{ 'Name' }}</x-admin.table.heading>
+                    <x-admin.table.heading>{{ 'Email' }}</x-admin.table.heading>
+                    <x-admin.table.heading>{{ 'Books count' }}</x-admin.table.heading>
                     <x-admin.table.heading></x-admin.table.heading>
                 </x-slot:header>
 
@@ -47,8 +48,22 @@
                             <x-admin.table.cell>{{ $author->email }}</x-admin.table.cell>
                             <x-admin.table.cell>{{ $author->books_count }}</x-admin.table.cell>
                             <x-admin.table.cell>
-                                <a href="{{ route('admin.authors.show', ['author_id' => $author->id]) }}">View</a>
-                                <a href="{{ route('admin.authors.edit', ['author_id' => $author->id]) }}">Edit</a>
+                                <div class="flex gap-3 justify-end">
+                                    <x-admin.table.action.view
+                                        :url="route('admin.authors.show', ['author_id' => $author->id])"
+                                        :label="'View'"
+                                    />
+
+                                    <x-admin.table.action.edit
+                                        :url="route('admin.authors.edit', ['author_id' => $author->id])"
+                                        :label="'Edit'"
+                                    />
+
+                                    <x-admin.table.action.delete
+                                        :url="route('admin.authors.destroy', ['author_id' => $author->id])"
+                                        :label="'Delete'"
+                                    />
+                                </div>
                             </x-admin.table.cell>
                         </x-admin.table.row>
                     @endforeach
@@ -60,5 +75,4 @@
             {{ $authors->links() }}
         </div>
     </div>
-
 @endsection

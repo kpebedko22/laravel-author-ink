@@ -8,53 +8,27 @@
 
     <title>@yield('title')</title>
 
-    @vite('resources/css/app.css')
-
-    <style>
-        .bg-sidebar {
-            background: #3d68ff;
-        }
-
-        .cta-btn {
-            color: #3d68ff;
-        }
-
-        .active-nav-link {
-            background: #1947ee;
-        }
-
-        .nav-item:hover {
-            background: #1947ee;
-        }
-
-        .account-link:hover {
-            background: #3d68ff;
-        }
-    </style>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-gray-100 flex">
+<body class="bg-primary-100">
 
 @include('layouts.admin.partials.sidebar')
 
-
-<div class="relative w-full flex flex-col h-screen overflow-y-hidden">
+<div class=" w-full flex flex-col h-screen overflow-y-hidden">
 
     @include('layouts.admin.partials.navbar')
 
-    <div class="w-full h-screen overflow-x-hidden border-t flex flex-col">
+    <div class="w-screen sm:pl-64 h-screen overflow-x-hidden border-t flex flex-col">
         <main class="w-full flex-grow p-6">
+
+            @include('layouts.admin.partials.notifications')
+
             @yield('content')
         </main>
-
-        @include('layouts.admin.partials.footer')
     </div>
-
 </div>
 
-<!-- AlpineJS -->
-<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
-<!-- Font Awesome -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"
-        integrity="sha256-KzZiKy0DWYsnwMF+X1DvQngQ2/FxF7MF3Ff72XcpuPs=" crossorigin="anonymous"></script>
+@stack('scripts')
+
 </body>
 </html>

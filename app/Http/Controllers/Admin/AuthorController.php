@@ -9,6 +9,7 @@ use App\Models\Author;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Benchmark;
 use Illuminate\Support\Facades\Auth;
 
 class AuthorController extends Controller
@@ -31,7 +32,8 @@ class AuthorController extends Controller
     {
         $author = Author::create($request->getData());
 
-        return redirect()->route('admin.authors.show', $author->id);
+        return redirect()->route('admin.authors.show', $author->id)
+            ->with('success', 'Author has been created!');
     }
 
     public function show(AuthorRequest $request): View

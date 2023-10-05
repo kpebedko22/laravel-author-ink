@@ -1,20 +1,13 @@
-@php
-    /**
-     * @var \App\Models\Author $model
-     */
-@endphp
+@php /** @var App\Models\Author $model */ @endphp
 
 @extends('layouts.admin.app')
-
-@section('title')
-    {{'Create author'}}
-@endsection
+@section('title', 'Create author')
 
 @section('content')
-    <div class="col-6">
-        <h1>{{ $model->exists ? 'Editing author' : 'Creating author' }}</h1>
+    <h1 class="text-3xl text-black pb-6"
+    >{{ $model->exists ? 'Editing author' : 'Creating author' }}</h1>
 
-        <x-validation-errors :errors="$errors"/>
+    <div class="xl:w-1/2 lg:w-2/3 rounded-xl bg-white p-5 border border-gray-300">
 
         <form method="POST"
               action="{{ $model->exists ? route('admin.authors.update', $model->id) : route('admin.authors.store') }}"
@@ -22,44 +15,83 @@
             @csrf
             @method($model->exists ?'PUT' : 'POST')
 
-            <div class="mb-3">
-                <label for="email" class="form-label">Email address</label>
-                <input type="email" class="form-control" id="email" name="email"
-                       value="{{ old('email', $model->email) }}">
-            </div>
-            <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
-                <input type="text" class="form-control" id="username" name="username"
-                       value="{{ old('username', $model->username) }}">
-            </div>
-            <div class="mb-3">
-                <label for="name" class="form-label">Name</label>
-                <input type="text" class="form-control" id="name" name="name"
-                       value="{{ old('name', $model->name) }}">
-            </div>
-            <div class="mb-3">
-                <label for="birthday" class="form-label">Birthday</label>
-                <input type="date" class="form-control" id="birthday" name="birthday"
-                       value="{{ $model ? date('Y-m-d', strtotime($model->birthday)) : '' }}">
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="is_admin"
-                       name="is_admin" {{ old('is_admin', $model->is_admin) ? 'checked' : '' }}>
-                <label class="form-check-label" for="is_admin">
-                    Is admin
-                </label>
-            </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" name="password"
-                       value="">
+            <div class="mt-4">
+                <x-admin.form.label for="email" value="{{ 'Email address' }}"/>
+                <div class="mt-2">
+                    <x-admin.form.input type="email"
+                                        name="email"
+                                        value="{{ old('email', $model->email) }}"
+                                        :required="true"
+                    />
+                    <x-admin.form.error name="email"/>
+                </div>
             </div>
 
-            <button type="submit" class="btn btn-success">
-                {{ $model->exists ? 'Apply changes' : 'Create' }}
-            </button>
+            <div class="mt-4">
+                <x-admin.form.label for="username" value="{{ 'Username' }}"/>
+                <div class="mt-2">
+                    <x-admin.form.input type="text"
+                                        name="username"
+                                        value="{{ old('username', $model->username) }}"
+                                        :required="true"
+                    />
+                    <x-admin.form.error name="username"/>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <x-admin.form.label for="name" value="{{ 'Name' }}"/>
+                <div class="mt-2">
+                    <x-admin.form.input type="text"
+                                        name="name"
+                                        value="{{ old('name', $model->name) }}"
+                                        :required="true"
+                    />
+                    <x-admin.form.error name="name"/>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <x-admin.form.label for="birthday" value="{{ 'Birthday' }}"/>
+                <div class="mt-2">
+                    <x-admin.form.input type="date"
+                                        name="birthday"
+                                        value="{{ old('birthday', $model->birthday) }}"
+                                        :required="true"
+                    />
+                    <x-admin.form.error name="birthday"/>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <x-admin.form.checkbox name="is_admin"
+                                       :checked="old('is_admin', $model->is_admin)"
+                >
+                    <x-admin.form.label for="is_admin" value="{{ 'Is admin' }}"/>
+                </x-admin.form.checkbox>
+            </div>
+
+            <div class="mt-4">
+                <x-admin.form.label for="password" value="{{ 'Password' }}"/>
+                <div class="mt-2">
+                    <x-admin.form.input type="password"
+                                        name="password"
+                                        value=""
+                                        :required="true"
+                                        autocomplete="new-password"
+                    />
+                    <x-admin.form.error name="password"/>
+                </div>
+            </div>
+
+            <div class="mt-6 flex items-center justify-end gap-x-6">
+                <button type="button"
+                        class="text-sm rounded-md px-3 py-2 font-semibold leading-6 text-gray-900 shadow-lg"
+                >{{ 'Cancel' }}</button>
+                <button type="submit"
+                        class="px-3 py-2 text-sm rounded-md transition-all shadow-lg bg-primary-600 hover:bg-primary-500 font-semibold text-dark-800 focus:outline-none focus:bg-primary-500 "
+                > {{ $model->exists ? 'Apply changes' : 'Create' }}</button>
+            </div>
         </form>
-
     </div>
-
 @endsection

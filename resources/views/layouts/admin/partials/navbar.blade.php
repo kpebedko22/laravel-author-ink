@@ -1,80 +1,67 @@
 <!-- Desktop Header -->
-<header class="w-full items-center bg-white py-2 px-6 hidden sm:flex">
+<header class="pl-64 w-screen items-center bg-white py-2 px-6 hidden sm:flex">
     <div class="w-1/2"></div>
-    <div x-data="{ isOpen: false }"
-         class="relative w-1/2 flex justify-end"
-    >
-        <button @click="isOpen = !isOpen"
-                class="relative z-10 w-12 h-12 rounded-full overflow-hidden border-4 border-gray-400 hover:border-gray-300 focus:border-gray-300 focus:outline-none"
+    <div class="relative w-1/2 flex justify-end">
+        <div x-data="{ isOpen: false }"
+             @click.outside="isOpen = false"
         >
-            <img src="https://source.unsplash.com/uJ8LNVCBjFQ/400x400">
-        </button>
-        <button x-show="isOpen"
-                @click="isOpen = false"
-                class="h-full w-full fixed inset-0 cursor-default"
-        ></button>
-        <div x-show="isOpen"
-             class="absolute w-32 bg-white rounded-lg shadow-lg py-2 mt-16"
-        >
-            <a href="#" class="block px-4 py-2 account-link hover:text-white">Account</a>
-            <a href="#" class="block px-4 py-2 account-link hover:text-white">Support</a>
-            <a href="#" class="block px-4 py-2 account-link hover:text-white">Sign Out</a>
+            <button @click="isOpen = !isOpen"
+                    class="relative flex justify-center items-center z-10 w-12 h-12 rounded-full overflow-hidden border border-gray-400 hover:border-gray-300 focus:border-gray-300 focus:outline-none"
+            >
+                <x-heroicon-o-user class="w-8 h-8"/>
+            </button>
+
+            <template x-if="isOpen">
+                <div
+                    class="absolute right-0 w-44 bg-white rounded-lg shadow-lg py-2 px-1 mt-0.5 border border-gray-300"
+                >
+                    <a href="#" class="flex px-4 py-2 rounded-xl transition-all text-dark-500 bg-white hover:bg-primary-700 hover:text-dark-700"
+                    >Account</a>
+                    <a href="#" class="flex px-4 py-2 rounded-xl transition-all text-dark-500 bg-white hover:bg-primary-700 hover:text-dark-700"
+                    >Sign Out</a>
+                </div>
+            </template>
         </div>
     </div>
 </header>
 
 <!-- Mobile Header & Nav -->
-<header x-data="{ isOpen: false }" class="w-full bg-sidebar py-5 px-6 sm:hidden">
+<header x-data="{ isOpen: false }" class="w-full bg-white py-5 px-6 sm:hidden">
     <div class="flex items-center justify-between">
-        <a href="index.html"
-           class="text-white text-3xl font-semibold uppercase hover:text-gray-300"
-        >Admin</a>
+        <a href="{{ route('admin.dashboard.index') }}"
+           class="text-dark-700 text-3xl font-semibold hover:text-gray-300"
+        >{{ config('app.name') }}</a>
 
         <button @click="isOpen = !isOpen"
-                class="text-white text-3xl focus:outline-none"
+                class="text-dark-700 text-3xl focus:outline-none"
         >
-            <i x-show="!isOpen" class="fas fa-bars"></i>
-            <i x-show="isOpen" class="fas fa-times"></i>
+            <x-heroicon-o-bars-3 class="w-5 h-5 mr-1" x-show="!isOpen"/>
+            <x-heroicon-o-x-mark class="w-5 h-5 mr-1" x-show="isOpen"/>
         </button>
     </div>
 
     <!-- Dropdown Nav -->
-    <nav :class="isOpen ? 'flex': 'hidden'"
+    <nav :class="isOpen ? 'flex' : 'hidden'"
          class="flex flex-col pt-4"
     >
-        <a href="index.html" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
-            <i class="fas fa-tachometer-alt mr-3"></i>
+        <a href="{{ route('admin.dashboard.index') }}"
+           class="flex rounded-xl transition-all items-center text-dark-700 opacity-75 hover:opacity-100 py-2 pl-4 {{ request()->is('admin/dashboard*') ? 'bg-primary-700 text-dark-900' : '' }}"
+        >
+            <x-heroicon-o-home class="w-5 h-5 mr-2"/>
             Dashboard
         </a>
-        <a href="blank.html" class="flex items-center active-nav-link text-white py-2 pl-4 nav-item">
-            <i class="fas fa-sticky-note mr-3"></i>
-            Blank Page
+        <a href="{{ route('admin.authors.index') }}"
+           class="flex rounded-xl transition-all items-center text-dark-700 opacity-75 hover:opacity-100 py-2 pl-4 {{ request()->is('admin/authors*') ? 'bg-primary-700 text-dark-900' : '' }}"
+        >
+            <x-heroicon-o-users class="w-5 h-5 mr-2"/>
+            Authors
         </a>
-        <a href="tables.html" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
-            <i class="fas fa-table mr-3"></i>
-            Tables
+        <a href="{{ route('admin.books.index') }}"
+           class="flex rounded-xl transition-all items-center text-dark-700 opacity-75 hover:opacity-100 py-2 pl-4 {{ request()->is('admin/books*') ? 'bg-primary-700 text-dark-900' : '' }}">
+            <x-heroicon-o-book-open class="w-5 h-5 mr-2"/>
+            Books
         </a>
-        <a href="forms.html" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
-            <i class="fas fa-align-left mr-3"></i>
-            Forms
-        </a>
-        <a href="tabs.html" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
-            <i class="fas fa-tablet-alt mr-3"></i>
-            Tabbed Content
-        </a>
-        <a href="calendar.html" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
-            <i class="fas fa-calendar mr-3"></i>
-            Calendar
-        </a>
-        <a href="#" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
-            <i class="fas fa-cogs mr-3"></i>
-            Support
-        </a>
-        <a href="#" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
-            <i class="fas fa-user mr-3"></i>
-            My Account
-        </a>
-        <a href="#" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+        <a href="#" class="flex items-center text-dark-700 opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
             <i class="fas fa-sign-out-alt mr-3"></i>
             Sign Out
         </a>

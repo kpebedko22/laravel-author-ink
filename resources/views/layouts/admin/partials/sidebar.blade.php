@@ -1,26 +1,27 @@
-<aside class="relative bg-sidebar h-screen w-64 hidden sm:block shadow-xl">
-    <div class="p-6">
+<aside class="bg-primary-400 fixed h-screen w-64 hidden sm:block border-r text-dark-500 shadow-2xl">
+    <div class="py-2 px-6 h-16 flex justify-center items-center">
         <a href="{{ route('admin.dashboard.index') }}"
-           class="text-white text-3xl font-semibold uppercase hover:text-gray-300"
-        >Admin</a>
+           class="text-3xl font-semibold text-dark-900"
+        >{{ config('app.name') }}</a>
     </div>
-    <nav class="text-white text-base font-semibold pt-3">
+
+    <nav class="text-base font-semibold pt-3 px-4">
         <a href="{{ route('admin.dashboard.index') }}"
-           class="flex items-center transition-all text-white py-4 pl-6 nav-item {{ request()->is('admin/dashboard*') ? 'active-nav-link' : '' }}"
+           class="flex rounded-xl items-center transition-all py-3 pl-6 mt-1 hover:bg-primary-700 hover:text-dark-900 {{ request()->is('admin/dashboard*') ? 'bg-primary-700 text-dark-900' : '' }}"
         >
-            <i class="fas fa-tachometer-alt mr-3"></i>
+            <x-heroicon-o-home class="w-5 h-5 mr-2"/>
             Dashboard
         </a>
         <a href="{{ route('admin.authors.index') }}"
-           class="flex items-center transition-all text-white py-4 pl-6 nav-item {{ request()->is('admin/authors*') ? 'active-nav-link' : '' }}"
+           class="flex rounded-xl items-center transition-all py-3 pl-6 mt-1 hover:bg-primary-700 hover:text-dark-900 {{ request()->is('admin/authors*') ? 'bg-primary-700 text-dark-900' : '' }}"
         >
-            <i class="fas fa-sticky-note mr-3"></i>
+            <x-heroicon-o-users class="w-5 h-5 mr-2"/>
             Authors
         </a>
         <a href="{{ route('admin.books.index') }}"
-           class="flex items-center transition-all text-white py-4 pl-6 nav-item {{ request()->is('admin/books*') ? 'active-nav-link' : '' }}"
+           class="flex rounded-xl items-center transition-all py-3 pl-6 mt-1 hover:bg-primary-700 hover:text-dark-900 {{ request()->is('admin/books*') ? 'bg-primary-700 text-dark-900' : '' }}"
         >
-            <i class="fas fa-table mr-3"></i>
+            <x-heroicon-o-book-open class="w-5 h-5 mr-2"/>
             Books
         </a>
     </nav>
