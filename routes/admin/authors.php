@@ -4,6 +4,9 @@ use App\Http\Controllers\Admin\AuthorController;
 
 Route::prefix('authors')
     ->name('authors.')
+    ->whereNumber([
+        'author_id',
+    ])
     ->group(function () {
         Route::get('', [AuthorController::class, 'index'])
             ->name('index');

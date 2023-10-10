@@ -4,6 +4,9 @@ use App\Http\Controllers\Admin\BookController;
 
 Route::prefix('books')
     ->name('books.')
+    ->whereNumber([
+        'book_id',
+    ])
     ->group(function () {
         Route::get('', [BookController::class, 'index'])
             ->name('index');
