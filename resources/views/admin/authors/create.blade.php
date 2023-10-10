@@ -1,22 +1,23 @@
 @php /** @var App\Models\Author $model */ @endphp
 
 @extends('layouts.admin.app')
-@section('title', 'Create author')
+@section('title', __('admin/author.label.' . ($model->exists ? 'edit' : 'create')))
 
 @section('content')
-    <h1 class="text-3xl text-black pb-6"
-    >{{ $model->exists ? 'Editing author' : 'Creating author' }}</h1>
+    <x-admin.page.heading>
+        <x-slot:heading>{{ __('admin/author.label.' . ($model->exists ? 'edit' : 'create')) }}</x-slot:heading>
+    </x-admin.page.heading>
 
-    <div class="xl:w-1/2 lg:w-2/3 rounded-xl bg-white p-5 border border-gray-300">
-
+    <x-admin.page.content class="xl:w-1/2 lg:w-2/3">
         <form method="POST"
               action="{{ $model->exists ? route('admin.authors.update', $model->id) : route('admin.authors.store') }}"
+              class="p-5"
         >
             @csrf
-            @method($model->exists ?'PUT' : 'POST')
+            @method($model->exists ? 'PUT' : 'POST')
 
             <div class="mt-4">
-                <x-admin.form.label for="email" value="{{ 'Email address' }}"/>
+                <x-admin.form.label for="email" :value="__('admin/author.attribute.email')"/>
                 <div class="mt-2">
                     <x-admin.form.input type="email"
                                         name="email"
@@ -28,7 +29,7 @@
             </div>
 
             <div class="mt-4">
-                <x-admin.form.label for="username" value="{{ 'Username' }}"/>
+                <x-admin.form.label for="username" :value="__('admin/author.attribute.username')"/>
                 <div class="mt-2">
                     <x-admin.form.input type="text"
                                         name="username"
@@ -40,7 +41,7 @@
             </div>
 
             <div class="mt-4">
-                <x-admin.form.label for="name" value="{{ 'Name' }}"/>
+                <x-admin.form.label for="name" :value="__('admin/author.attribute.name')"/>
                 <div class="mt-2">
                     <x-admin.form.input type="text"
                                         name="name"
@@ -52,7 +53,7 @@
             </div>
 
             <div class="mt-4">
-                <x-admin.form.label for="birthday" value="{{ 'Birthday' }}"/>
+                <x-admin.form.label for="birthday" :value="__('admin/author.attribute.birthday')"/>
                 <div class="mt-2">
                     <x-admin.form.input type="date"
                                         name="birthday"
@@ -67,12 +68,12 @@
                 <x-admin.form.checkbox name="is_admin"
                                        :checked="old('is_admin', $model->is_admin)"
                 >
-                    <x-admin.form.label for="is_admin" value="{{ 'Is admin' }}"/>
+                    <x-admin.form.label for="is_admin" :value="__('admin/author.attribute.is_admin')"/>
                 </x-admin.form.checkbox>
             </div>
 
             <div class="mt-4">
-                <x-admin.form.label for="password" value="{{ 'Password' }}"/>
+                <x-admin.form.label for="password" :value="__('admin/author.attribute.password')"/>
                 <div class="mt-2">
                     <x-admin.form.input type="password"
                                         name="password"
@@ -93,5 +94,5 @@
                 > {{ $model->exists ? 'Apply changes' : 'Create' }}</button>
             </div>
         </form>
-    </div>
+    </x-admin.page.content>
 @endsection
