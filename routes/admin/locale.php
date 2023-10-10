@@ -2,8 +2,8 @@
 
 use App\Http\Controllers\Admin\LocaleController;
 
-Route::name('locale.')
-    ->prefix('locale')
+Route::prefix('locale')
+    ->name('locale.')
     ->group(function () {
         Route::post('', [LocaleController::class, 'store'])
             ->name('store');
