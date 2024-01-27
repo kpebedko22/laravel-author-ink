@@ -7,6 +7,4 @@ Route::get('', function () {
 Route::prefix('')
     ->name('web.')
     ->group(function () {
-
-        require __DIR__ . '/web/books.php';
     });
