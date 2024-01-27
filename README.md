@@ -5,7 +5,7 @@
 Clone repository
 
 ```shell
-git clone https://github.com/kpebedko22/php-test-laravel.git
+git clone https://github.com/kpebedko22/laravel-author-ink.git
 ```
 
 Copy `.env.example` as `.env`

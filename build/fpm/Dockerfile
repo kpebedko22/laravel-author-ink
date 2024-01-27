@@ -14,7 +14,6 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     zip \
     software-properties-common \
-    npm \
     unzip && pecl install redis
 
 # Clear cache
@@ -31,11 +30,6 @@ RUN apt-get -y update \
 
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-# Install npm
-RUN npm install npm@latest -g && \
-    npm install n -g && \
-    n latest
 
 # Update PHP settings
 RUN sed -E -i -e 's/upload_max_filesize = 2M/upload_max_filesize = 64M/' $PHP_INI_DIR/php.ini-development \

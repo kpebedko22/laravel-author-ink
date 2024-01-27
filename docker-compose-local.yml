@@ -1,0 +1,80 @@
+services:
+  author-ink-fpm:
+    build:
+      args:
+        user: author_ink_user
+        uid: 1000
+      context: ./
+      dockerfile: build/fpm/Dockerfile
+    image: author-ink
+    container_name: author-ink-fpm
+    working_dir: /var/www/
+    volumes:
+      - ./:/var/www
+    networks:
+      - author-ink
+  author-ink-mysql:
+    image: mysql:8.0.29
+    container_name: author-ink-mysql
+    ports:
+      - '127.0.0.1:${DB_PORT}:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+      MYSQL_ROOT_HOST: "%"
+      MYSQL_DATABASE: '${DB_DATABASE}'
+      MYSQL_USER: '${DB_USERNAME}'
+      MYSQL_PASSWORD: '${DB_PASSWORD}'
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - ./build/mysql/data:/var/lib/mysql
+    networks:
+      - author-ink
+  author-ink-nginx:
+    image: nginx:alpine
+    container_name: author-ink-nginx
+    ports:
+      - 8000:80
+    volumes:
+      - ./:/var/www
+      - ./build/nginx:/etc/nginx/conf.d/
+    networks:
+      - author-ink
+    depends_on: [ author-ink-fpm ]
+  author-ink-redis:
+    image: redis:alpine
+    container_name: author-ink-redis
+    volumes:
+      - ./build/redis/data:/data
+    networks:
+      - author-ink
+  author-ink-horizon:
+    image: author-ink
+    container_name: author-ink-horizon
+    working_dir: /var/www/
+    command: php artisan horizon
+    depends_on: [ author-ink-redis ]
+    volumes:
+      - ./:/var/www
+    networks:
+      - author-ink
+  author-ink-npm:
+    image: node:alpine3.17
+    container_name: author-ink-npm
+    working_dir: /var/www
+    entrypoint:
+      - /bin/sh
+      - ./build/npm/entrypoint-local.sh
+    volumes:
+      - ./:/var/www
+    ports:
+      - '127.0.0.1:5173:5173'
+    networks:
+      - author-ink
+networks:
+  author-ink:
+    name: author-ink
+    driver: bridge
+volumes:
+  mysql:
+    driver: local
