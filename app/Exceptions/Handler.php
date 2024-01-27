@@ -3,9 +3,12 @@
 namespace App\Exceptions;
 
 use App\Http\Responses\Api\v1\JsonErrorResponse;
+use App\Managers\Admin\NotificationSessionManager;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use RuntimeException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
@@ -19,6 +22,12 @@ class Handler extends ExceptionHandler
 
     public function register(): void
     {
+        $this->renderable(function (RuntimeException $e, Request $request) {
+            NotificationSessionManager::error($e->getMessage());
+
+            return back();
+        });
+
         $this->reportable(function (Throwable $e) {
             //
         });
@@ -42,7 +51,7 @@ class Handler extends ExceptionHandler
         $className = get_class($e);
 
         switch ($className) {
-            case  NotFoundHttpException::class:
+            case NotFoundHttpException::class:
             case ModelNotFoundException::class:
                 $response = new JsonErrorResponse(__("api/$version/exception.not_found"));
                 $status = 404;

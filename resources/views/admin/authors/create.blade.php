@@ -78,7 +78,7 @@
                     <x-admin.form.input type="password"
                                         name="password"
                                         value=""
-                                        :required="true"
+                                        :required="!$model->exists"
                                         autocomplete="new-password"
                     />
                     <x-admin.form.error name="password"/>

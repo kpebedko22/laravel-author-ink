@@ -5,12 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Authors\AuthorRequest;
 use App\Http\Requests\Admin\Authors\AuthorUpsertRequest;
+use App\Managers\Admin\NotificationSessionManager;
 use App\Models\Author;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Benchmark;
 use Illuminate\Support\Facades\Auth;
+use RuntimeException;
 
 class AuthorController extends Controller
 {
@@ -32,8 +33,9 @@ class AuthorController extends Controller
     {
         $author = Author::create($request->getData());
 
-        return redirect()->route('admin.authors.show', $author->id)
-            ->with('success', 'Author has been created!');
+        NotificationSessionManager::success(__('admin/notification/author.store'));
+
+        return redirect()->route('admin.authors.show', $author->id);
     }
 
     public function show(AuthorRequest $request): View
@@ -51,6 +53,8 @@ class AuthorController extends Controller
         $author = $request->getAuthor();
         $author->update($request->getData());
 
+        NotificationSessionManager::success(__('admin/notification/author.update'));
+
         return redirect()->route('admin.authors.show', ['author_id' => $author->id]);
     }
 
@@ -58,9 +62,13 @@ class AuthorController extends Controller
     {
         $author = $request->getAuthor();
 
-        if (Auth::id() != $author->id) {
-            $author->delete();
+        if (Auth::id() === $author->id) {
+            throw new RuntimeException('Нельзя удалить самого себя...');
         }
+
+        $author->delete();
+
+        NotificationSessionManager::success(__('admin/notification/author.destroy'));
 
         return redirect()->route('admin.authors.index');
     }
