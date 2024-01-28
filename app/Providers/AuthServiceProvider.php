@@ -2,16 +2,12 @@
 
 namespace App\Providers;
 
-use App\Models\Book;
-use App\Policies\BookPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Auth;
 
 class AuthServiceProvider extends ServiceProvider
 {
-    protected $policies = [
-        Book::class => BookPolicy::class,
-    ];
+    protected $policies = [];
 
     public function boot(): void
     {

@@ -26,6 +26,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('')
             ->domain('http://admin.localhost')
+            ->authGuard('admin')
             ->colors([
                 'primary' => Color::Amber,
             ])
