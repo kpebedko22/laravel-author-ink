@@ -65,6 +65,10 @@ class Author extends Authenticatable
         'is_admin' => 'bool',
     ];
 
+    protected $attributes = [
+        'is_admin' => false,
+    ];
+
     public function books(): HasMany|Book
     {
         return $this->hasMany(Book::class, 'author_id', 'id');

@@ -20,26 +20,26 @@ class Handler extends ExceptionHandler
         'password_confirmation',
     ];
 
-    public function register(): void
-    {
-        $this->renderable(function (RuntimeException $e, Request $request) {
-            NotificationSessionManager::error($e->getMessage());
+//    public function register(): void
+//    {
+//        $this->renderable(function (RuntimeException $e, Request $request) {
+//            NotificationSessionManager::error($e->getMessage());
+//
+//            return back();
+//        });
+//
+//        $this->reportable(function (Throwable $e) {
+//            //
+//        });
+//    }
 
-            return back();
-        });
-
-        $this->reportable(function (Throwable $e) {
-            //
-        });
-    }
-
-    public function render($request, Throwable $e)
-    {
-        return match (true) {
-            $request->is('api*') => $this->renderApi($request, $e),
-            default => parent::render($request, $e)
-        };
-    }
+//    public function render($request, Throwable $e)
+//    {
+//        return match (true) {
+//            $request->is('api*') => $this->renderApi($request, $e),
+//            default => parent::render($request, $e)
+//        };
+//    }
 
     public function renderApi($request, Throwable $e): JsonResponse
     {
