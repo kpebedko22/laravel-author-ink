@@ -11,8 +11,5 @@ class AuthServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        Auth::provider('eloquent', function ($app, array $config) {
-            return new EloquentUserProvider($app['hash'], $config['model']);
-        });
     }
 }

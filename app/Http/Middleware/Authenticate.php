@@ -11,6 +11,6 @@ class Authenticate extends Middleware
     {
         return $request->expectsJson()
             ? null
-            : route('admin.auth.index');
+            : route('web.index');
     }
 }

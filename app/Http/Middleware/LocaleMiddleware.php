@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Middleware\Admin;
+namespace App\Http\Middleware;
 
-use App\Managers\Admin\LocaleManager;
+use App\Managers\Web\LocaleManager;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;

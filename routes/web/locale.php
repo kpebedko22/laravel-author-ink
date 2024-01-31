@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\LocaleController;
+use App\Http\Controllers\Web\LocaleController;
 
 Route::prefix('locale')
     ->name('locale.')

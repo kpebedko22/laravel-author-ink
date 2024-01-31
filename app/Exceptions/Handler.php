@@ -3,7 +3,7 @@
 namespace App\Exceptions;
 
 use App\Http\Responses\Api\v1\JsonErrorResponse;
-use App\Managers\Admin\NotificationSessionManager;
+use App\Managers\Web\NotificationSessionManager;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;

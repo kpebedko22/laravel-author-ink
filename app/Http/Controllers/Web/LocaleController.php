@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Language\LocaleRequest;
-use App\Managers\Admin\LocaleManager;
+use App\Http\Requests\Web\Locale\LocaleRequest;
+use App\Managers\Web\LocaleManager;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;

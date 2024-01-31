@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Requests\Admin\Language;
+namespace App\Http\Requests\Web\Locale;
 
-use App\Managers\Admin\LocaleManager;
+use App\Managers\Web\LocaleManager;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 

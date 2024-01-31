@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Managers\Admin;
+namespace App\Managers\Web;
 
 use Illuminate\Support\Facades\Session;
 
