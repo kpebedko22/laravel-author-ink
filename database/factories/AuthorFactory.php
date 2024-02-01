@@ -17,6 +17,7 @@ class AuthorFactory extends Factory
             'password' => self::PASSWORD,
             'is_admin' => fake()->boolean(),
             'birthday' => fake()->dateTime(),
+            'cover_color' => fake()->hexColor(),
         ];
     }
 }

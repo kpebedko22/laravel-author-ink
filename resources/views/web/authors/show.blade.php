@@ -12,8 +12,16 @@
 @section('content')
 
     <div class="rounded-2xl">
-        {{-- TODO: add author cover --}}
-        <div class="bg-gray-900 h-96 rounded-2xl">
+        <?php
+        if ($author->cover_color) {
+            $style = "background-color: $author->cover_color;";
+            $class = '';
+        } else {
+            $style = '';
+            $class = 'bg-gray-900';
+        }
+        ?>
+        <div class="{{ $class }} h-96 rounded-2xl" style="{{ $style }}">
         </div>
 
         <div class="container mx-auto px-8 lg:px-48 flex">
@@ -23,12 +31,11 @@
             </div>
 
             <div class="mt-20">
-                <div class="flex justify-between"><h5
-                        class="block antialiased tracking-normal font-sans font-semibold text-inherit text-3xl"
+                <div class="flex justify-between">
+                    <h5 class="block antialiased tracking-normal font-sans font-semibold text-inherit text-3xl"
                     >{{ $author->name }}</h5>
-                    <button
-                        class="align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
-                        type="button"
+                    <button type="button"
+                            class="align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
                     >{{ 'follow' }}</button>
                 </div>
 
@@ -65,14 +72,17 @@
             <div
                 class="flex-col bg-clip-border rounded-xl text-gray-700 shadow-md relative grid h-full w-full place-items-center overflow-hidden bg-black">
                 <div class="absolute inset-0 h-full w-full bg-gray-900/75"></div>
-                <div class="p-6 relative w-full"><h3
-                        class="block antialiased tracking-normal font-sans text-3xl font-semibold leading-snug text-white mt-4">
-                        Discover all my articles</h3>
-                    <p class="block antialiased font-sans text-base leading-relaxed text-white py-4 font-normal">I am a
-                        versatile writer who explores a wide range of genres and topics.</p>
-                    <button
-                        class="align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg text-white hover:bg-white/10 active:bg-white/30 flex items-center gap-2"
-                        type="button">read more
+                <div class="p-6 relative w-full">
+                    <h3 class="block antialiased tracking-normal font-sans text-3xl font-semibold leading-snug text-white mt-4"
+                    >{{ 'Discover all my articles' }}</h3>
+                    <p class="block antialiased font-sans text-base leading-relaxed text-white py-4 font-normal"
+                    >{{ 'I am a versatile writer who explores a wide range of genres and topics.' }}</p>
+                    <button type="button"
+                            class="align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg text-white hover:bg-white/10 active:bg-white/30 flex items-center gap-2"
+                    >
+                        {{ 'read more' }}
+
+                        {{-- TODO: use heroicon --}}
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3"
                              stroke="currentColor" aria-hidden="true" class="h-3.5 w-3.5 text-white">
                             <path stroke-linecap="round" stroke-linejoin="round"
