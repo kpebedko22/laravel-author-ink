@@ -16,7 +16,7 @@
             <header class="mb-6">
                 <h1 class="font-bold text-4xl mb-6">{{ $book->name }}</h1>
                 <div class=" text-lg text-gray-500 italic">
-                    <a href="/" class="text-black">
+                    <a href="{{ route('web.authors.show', $book->author) }}" class="text-black">
                         {{ $book->author->name }}
                     </a>
                     <time class=""
