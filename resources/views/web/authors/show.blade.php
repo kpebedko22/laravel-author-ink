@@ -31,27 +31,13 @@
                         type="button"
                     >{{ 'follow' }}</button>
                 </div>
-                {{-- TODO: make blade components --}}
+
                 <div class="flex items-center gap-6">
-                    <div class="flex items-center gap-2 mt-3">
-                        <p class="block antialiased font-sans text-base leading-relaxed text-inherit !text-gray-900 font-bold"
-                        >323</p>
-                        <p class="block antialiased font-sans text-base leading-relaxed text-inherit !text-gray-500 font-normal"
-                        >{{ 'Books' }}</p>
-                    </div>
-                    <div class="flex items-center gap-2 mt-3">
-                        <p class="block antialiased font-sans text-base leading-relaxed text-inherit !text-gray-900 font-bold"
-                        >{{ '3.5k' }}</p>
-                        <p class="block antialiased font-sans text-base leading-relaxed text-inherit !text-gray-500 font-normal"
-                        >{{ 'Followers' }}</p>
-                    </div>
-                    <div class="flex items-center gap-2 mt-3">
-                        <p class="block antialiased font-sans text-base leading-relaxed text-inherit !text-gray-900 font-bold"
-                        >{{ '260' }}</p>
-                        <p class="block antialiased font-sans text-base leading-relaxed text-inherit !text-gray-500 font-normal"
-                        >{{ 'Following' }}</p>
-                    </div>
+                    <x-web.author-stat :label="'Books'" :value="'323'"/>
+                    <x-web.author-stat :label="'Followers'" :value="'3.5k'"/>
+                    <x-web.author-stat :label="'Following'" value="260"/>
                 </div>
+
                 {{-- TODO: add author description --}}
                 <p class="block antialiased font-sans text-xl font-normal leading-relaxed text-inherit !text-gray-500 mt-8">
                     A wordsmith who believes in the power of language to shape our world, inspire change, and connect us
