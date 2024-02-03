@@ -75,6 +75,16 @@ class Author extends Authenticatable
         return $this->hasMany(Book::class, 'author_id', 'id');
     }
 
+    public function followers(): HasMany|Follower
+    {
+        return $this->hasMany(Follower::class, 'following_id', 'id');
+    }
+
+    public function followings(): HasMany|Follower
+    {
+        return $this->hasMany(Follower::class, 'follower_id', 'id');
+    }
+
     protected function password(): Attribute
     {
         return new Attribute(

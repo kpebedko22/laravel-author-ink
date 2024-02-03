@@ -1,20 +1,14 @@
 <?php
 /**
- * @var App\Models\Author $author
+ * @var App\Livewire\Authors\ViewAuthor $this
  * @var Illuminate\Support\Collection<App\Models\Book> $topBooks
  */
 ?>
-
-@extends('layouts.web.app')
-
-@section('title', $author->name)
-
-@section('content')
-
+<div>
     <div class="rounded-2xl">
         <?php
-        if ($author->cover_color) {
-            $style = "background-color: $author->cover_color;";
+        if ($this->author->cover_color) {
+            $style = "background-color: $this->author->cover_color;";
             $class = '';
         } else {
             $style = '';
@@ -33,16 +27,17 @@
             <div class="mt-20">
                 <div class="flex justify-between">
                     <h5 class="block antialiased tracking-normal font-sans font-semibold text-inherit text-3xl"
-                    >{{ $author->name }}</h5>
+                    >{{ $this->author->name }}</h5>
                     <button type="button"
                             class="align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
+                            wire:click="follow"
                     >{{ 'follow' }}</button>
                 </div>
 
                 <div class="flex items-center gap-6">
-                    <x-web.author-stat :label="'Books'" :value="$author->books_count"/>
-                    <x-web.author-stat :label="'Followers'" :value="$author->followers_count"/>
-                    <x-web.author-stat :label="'Following'" :value="$author->followings_count"/>
+                    <x-web.author-stat :label="'Books'" :value="$this->author->books_count"/>
+                    <x-web.author-stat :label="'Followers'" :value="$this->author->followers_count"/>
+                    <x-web.author-stat :label="'Following'" :value="$this->author->followings_count"/>
                 </div>
 
                 {{-- TODO: add author description --}}
@@ -70,7 +65,7 @@
             @endforeach
 
             <div
-                class="flex-col bg-clip-border rounded-xl text-gray-700 shadow-md relative grid h-full w-full place-items-center overflow-hidden bg-black">
+                    class="flex-col bg-clip-border rounded-xl text-gray-700 shadow-md relative grid h-full w-full place-items-center overflow-hidden bg-black">
                 <div class="absolute inset-0 h-full w-full bg-gray-900/75"></div>
                 <div class="p-6 relative w-full">
                     <h3 class="block antialiased tracking-normal font-sans text-3xl font-semibold leading-snug text-white mt-4"
@@ -93,5 +88,4 @@
             </div>
         </div>
     </section>
-
-@endsection
+</div>
