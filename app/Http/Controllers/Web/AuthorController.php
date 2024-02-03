@@ -17,6 +17,8 @@ class AuthorController extends Controller
 
     public function show(Author $author): View
     {
+        $author->loadCount('books');
+
         return view('web.authors.show', [
             'author' => $author,
             'topBooks' => $author->books()->limit(3)->get(),

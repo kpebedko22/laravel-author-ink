@@ -40,7 +40,7 @@
                 </div>
 
                 <div class="flex items-center gap-6">
-                    <x-web.author-stat :label="'Books'" :value="'323'"/>
+                    <x-web.author-stat :label="'Books'" :value="$author->books_count"/>
                     <x-web.author-stat :label="'Followers'" :value="'3.5k'"/>
                     <x-web.author-stat :label="'Following'" value="260"/>
                 </div>
