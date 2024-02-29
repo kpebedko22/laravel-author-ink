@@ -22,4 +22,4 @@ Alpine.data('notificationsHandler', () => ({
     },
 }));
 
-Alpine.start();
+// Alpine.start();

@@ -9,7 +9,6 @@ Route::resource('authors', AuthorController::class)
 Route::prefix('authors')
     ->name('authors.')
     ->group(function () {
-
         Route::get('{authorId}', ViewAuthor::class)
             ->name('show');
     });

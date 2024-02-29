@@ -24,12 +24,23 @@
 
             <div class="flex items-center gap-4">
                 <div class="sm:flex sm:gap-4">
-                    <a
-                        class="block rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-teal-700"
-                        href="/login"
-                    >
-                        {{ 'Войти' }}
-                    </a>
+                    @guest()
+                        <a
+                            class="block rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-teal-700"
+                            href="{{ route('web.auth.login') }}"
+                        >
+                            {{ 'Войти' }}
+                        </a>
+                    @else
+                        <form action="{{ route('web.auth.logout') }}" method="POST">
+                            @method('POST')
+                            @csrf
+                            <button type="submit"
+                                    class="block rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-teal-700"
+                            >{{ 'Выйти' }}</button>
+                        </form>
+                        <div class="">{{ auth()->user()->name }}</div>
+                    @endguest
                 </div>
 
                 <button
