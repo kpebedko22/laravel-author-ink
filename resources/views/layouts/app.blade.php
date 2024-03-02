@@ -9,7 +9,6 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
-1
 <div class="flex flex-col min-h-screen">
     @include('layouts.web.partials.header')
 
@@ -22,5 +21,6 @@
     @include('layouts.web.partials.footer')
 </div>
 
+@livewire('wire-elements-modal')
 </body>
 </html>

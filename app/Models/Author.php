@@ -5,16 +5,15 @@ namespace App\Models;
 use Database\Factories\AuthorFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Sanctum\PersonalAccessToken;
 
@@ -46,6 +45,15 @@ use Laravel\Sanctum\PersonalAccessToken;
  * @method static Builder|Author newQuery()
  * @method static Builder|Author query()
  *
+ * @property-read Collection<int, Author> $authorFollowers
+ * @property-read int|null $author_followers_count
+ * @property-read Collection<int, Author> $authorFollowings
+ * @property-read int|null $author_followings_count
+ * @property-read Collection<int, Follower> $followers
+ * @property-read int|null $followers_count
+ * @property-read Collection<int, Follower> $followings
+ * @property-read int|null $followings_count
+ *
  * @mixin Eloquent
  */
 class Author extends Authenticatable
@@ -64,6 +72,7 @@ class Author extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'is_admin' => 'bool',
+        'password' => 'hashed',
     ];
 
     protected $attributes = [
@@ -75,20 +84,41 @@ class Author extends Authenticatable
         return $this->hasMany(Book::class, 'author_id', 'id');
     }
 
+    /**
+     * Те, кто подписаны на автора
+     */
     public function followers(): HasMany|Follower
     {
         return $this->hasMany(Follower::class, 'following_id', 'id');
     }
 
+    /**
+     * Те, на кого подписан на автора
+     */
     public function followings(): HasMany|Follower
     {
         return $this->hasMany(Follower::class, 'follower_id', 'id');
     }
 
-    protected function password(): Attribute
+    public function authorFollowers(): BelongsToMany|Author
     {
-        return new Attribute(
-            set: fn($value) => Hash::make($value),
-        );
+        return $this
+            ->belongsToMany(
+                Author::class,
+                'followers',
+                'following_id',
+                'follower_id',
+            );
+    }
+
+    public function authorFollowings(): BelongsToMany|Author
+    {
+        return $this
+            ->belongsToMany(
+                Author::class,
+                'followers',
+                'follower_id',
+                'following_id',
+            );
     }
 }

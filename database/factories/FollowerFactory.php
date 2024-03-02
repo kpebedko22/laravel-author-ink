@@ -2,22 +2,20 @@
 
 namespace Database\Factories;
 
+use App\Models\Author;
+use App\Models\Follower;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Follower>
+ * @extends Factory<Follower>
  */
 class FollowerFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
         return [
-            //
+            'follower_id' => Author::factory(),
+            'following_id' => Author::factory(),
         ];
     }
 }
