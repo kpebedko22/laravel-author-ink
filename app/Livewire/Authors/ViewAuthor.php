@@ -3,6 +3,7 @@
 namespace App\Livewire\Authors;
 
 use App\Models\Author;
+use App\Repositories\FollowerRepository;
 use App\Services\Followers\FollowerService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
@@ -30,9 +31,10 @@ class ViewAuthor extends Component
             ->findOrFail($this->authorId);
     }
 
+    #[Computed]
     public function isFollowed(): bool
     {
-        return (bool)Auth::user()?->followings()->where(['following_id' => $this->author->id])->exists();
+        return (new FollowerRepository)->isFollowed(Auth::user(), $this->author->id);
     }
 
     public function follow(): void
@@ -46,7 +48,7 @@ class ViewAuthor extends Component
         }
 
         try {
-            (new FollowerService)->store($follower, $this->author);
+            (new FollowerService)->store($follower, $this->author->id);
 
             $this->author->loadCount(['followers', 'followings']);
 
@@ -67,7 +69,7 @@ class ViewAuthor extends Component
         }
 
         try {
-            (new FollowerService)->destroy($follower, $this->author);
+            (new FollowerService)->destroy($follower, $this->author->id);
 
             $this->author->loadCount(['followers', 'followings']);
 

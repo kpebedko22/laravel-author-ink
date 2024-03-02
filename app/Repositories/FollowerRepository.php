@@ -35,4 +35,12 @@ final class FollowerRepository
             $paginated->hasMorePages(),
         );
     }
+
+    public function isFollowed(?Author $follower, int $followForId): bool
+    {
+        return (bool)$follower
+            ?->followings()
+            ->where(['following_id' => $followForId])
+            ->exists();
+    }
 }

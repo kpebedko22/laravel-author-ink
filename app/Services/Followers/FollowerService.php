@@ -8,16 +8,16 @@ use App\Models\Follower;
 
 class FollowerService
 {
-    public function store(Author $follower, Author $following): Follower
+    public function store(Author $follower, int $followingId): Follower
     {
-        if ($follower->id === $following->id) {
+        if ($follower->id === $followingId) {
             throw FollowerException::followYourselfIsForbidden();
         }
 
         $follow = Follower::query()
             ->firstOrCreate([
                 'follower_id' => $follower->id,
-                'following_id' => $following->id,
+                'following_id' => $followingId,
             ]);
 
         if (!$follow->wasRecentlyCreated) {
@@ -27,16 +27,16 @@ class FollowerService
         return $follow;
     }
 
-    public function destroy(Author $follower, Author $following)
+    public function destroy(Author $follower, int $followingId): bool
     {
-        if ($follower->id === $following->id) {
+        if ($follower->id === $followingId) {
             throw FollowerException::unfollowYourselfIsForbidden();
         }
 
         $isDeleted = (bool)Follower::query()
             ->where([
                 'follower_id' => $follower->id,
-                'following_id' => $following->id,
+                'following_id' => $followingId,
             ])
             ->delete();
 
