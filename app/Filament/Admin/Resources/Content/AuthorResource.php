@@ -3,7 +3,6 @@
 namespace App\Filament\Admin\Resources\Content;
 
 use App\Filament\Admin\Resources\Content\AuthorResource\Pages;
-use App\Filament\Admin\Resources\Content\AuthorResource\RelationManagers;
 use App\Models\Author;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -94,11 +93,6 @@ class AuthorResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [];
     }
 
     public static function getPages(): array

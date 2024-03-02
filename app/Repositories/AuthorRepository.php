@@ -14,15 +14,12 @@ final class AuthorRepository
 
     public static function show(int $id): Author
     {
-        /** @var Author $author */
-        $author = Author::with(['books'])->findOrFail($id);
-
-        return $author;
+        return Author::query()->with(['books'])->findOrFail($id);
     }
 
     public static function getById(int $id): Author
     {
-        return Author::findOrFail($id);
+        return Author::query()->findOrFail($id);
     }
 
     public static function statistic(): Collection

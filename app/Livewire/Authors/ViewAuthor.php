@@ -84,11 +84,7 @@ class ViewAuthor extends Component
     {
         $topBooks = $this->author->books()->limit(3)->get();
 
-        return view(
-            'livewire.authors.view-author',
-            [
-                'topBooks' => $topBooks,
-            ])
+        return view('livewire.authors.view-author', ['topBooks' => $topBooks])
             ->title($this->author->name);
     }
 }

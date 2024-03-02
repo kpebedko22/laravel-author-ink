@@ -17,20 +17,18 @@ final class BookRepository
 
     public static function show(int $id): Book
     {
-        /** @var Book $book */
-        $book = Book::with(['author'])->findOrFail($id);
-
-        return $book;
+        return Book::query()->with(['author'])->findOrFail($id);
     }
 
     public static function getById(int $id): Book
     {
-        return Book::findOrFail($id);
+        return Book::query()->findOrFail($id);
     }
 
     public static function isAvailable(Author $author, int $id): bool
     {
-        return Book::available($author)
+        return Book::query()
+            ->available($author)
             ->where('id', $id)
             ->exists();
     }
