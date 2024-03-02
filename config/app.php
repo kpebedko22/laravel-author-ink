@@ -185,6 +185,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
+        'Avatar'    => Laravolt\Avatar\Facade::class,
     ])->toArray(),
 
     'developer_email' => env('APP_DEVELOPER_EMAIL'),

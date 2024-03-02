@@ -11,18 +11,36 @@ if ($this->author->cover_color) {
     $coverStyle = '';
     $coverClass = 'bg-gray-900';
 }
+
+$avatarUrl = $this->author->getFirstMediaUrl('avatar');
+$coverUrl = $this->author->getFirstMediaUrl('coverImage');
 ?>
 <div>
     <div class="rounded-2xl">
-        <div class="{{ $coverClass }} h-96 rounded-2xl"
-             style="{{ $coverStyle }}"
+        <div
+            class="{{ $coverClass }} max-h-48 md:max-h-64 lg:max-h-80 h-80 rounded-2xl overflow-hidden flex justify-center items-center"
+            style="{{ $coverStyle }}"
         >
+            @if($coverUrl)
+                <img src="{{ $coverUrl }}"
+                     alt="Cover Image"
+                     class="object-cover min-h-full min-w-full shrink-0"
+                >
+            @endif
         </div>
 
         <div class="container mx-auto px-8 lg:px-48 flex">
             <div class="absolute -translate-y-28">
-                {{-- TODO: add author avatar --}}
-                <div class="bg-amber-400 rounded-2xl w-40 h-40"></div>
+                @if($avatarUrl)
+                    <img class="bg-amber-400 rounded-2xl w-40 h-40"
+                         src="{{ $avatarUrl }}"
+                         alt="{{ $this->author->name }}"
+                    >
+                @else
+                    <div class="bg-amber-400 overflow-hidden rounded-2xl w-40 h-40">
+                        {!! Avatar::setTheme('author-lg')->create($this->author->name)->toSvg() !!}
+                    </div>
+                @endif
             </div>
 
             <div class="mt-20">
@@ -85,7 +103,7 @@ if ($this->author->cover_color) {
             @endforeach
 
             <div
-                    class="flex-col bg-clip-border rounded-xl text-gray-700 shadow-md relative grid h-full w-full place-items-center overflow-hidden bg-black">
+                class="flex-col bg-clip-border rounded-xl text-gray-700 shadow-md relative grid h-full w-full place-items-center overflow-hidden bg-black">
                 <div class="absolute inset-0 h-full w-full bg-gray-900/75"></div>
                 <div class="p-6 relative w-full">
                     <h3 class="block antialiased tracking-normal font-sans text-3xl font-semibold leading-snug text-white mt-4"

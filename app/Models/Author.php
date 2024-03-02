@@ -16,6 +16,8 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Sanctum\PersonalAccessToken;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
 /**
  * App\Models\Author
@@ -56,11 +58,12 @@ use Laravel\Sanctum\PersonalAccessToken;
  *
  * @mixin Eloquent
  */
-class Author extends Authenticatable
+class Author extends Authenticatable implements HasMedia
 {
     use HasApiTokens,
         HasFactory,
-        Notifiable;
+        Notifiable,
+        InteractsWithMedia;
 
     protected $guarded = ['id'];
 
@@ -78,6 +81,19 @@ class Author extends Authenticatable
     protected $attributes = [
         'is_admin' => false,
     ];
+
+    public function registerMediaCollections(): void
+    {
+        $this
+            ->addMediaCollection('avatar')
+            ->useDisk('authors-avatars')
+            ->singleFile();
+
+        $this
+            ->addMediaCollection('coverImage')
+            ->useDisk('authors-cover-images')
+            ->singleFile();
+    }
 
     public function books(): HasMany|Book
     {

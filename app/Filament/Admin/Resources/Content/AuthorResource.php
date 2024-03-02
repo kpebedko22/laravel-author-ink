@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Resources\Content;
 use App\Filament\Admin\Resources\Content\AuthorResource\Pages;
 use App\Models\Author;
 use Filament\Forms;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -21,32 +22,56 @@ class AuthorResource extends Resource
         return $form
             ->columns(3)
             ->schema([
-                Forms\Components\Section::make()
+                Forms\Components\Tabs::make()
                     ->columnSpan(['lg' => fn(?Author $record) => $record === null ? 3 : 2])
                     ->schema([
-                        Forms\Components\TextInput::make('name')
-                            ->maxLength(255)
-                            ->required(),
+                        Forms\Components\Tabs\Tab::make('General')
+                            ->schema([
+                                Forms\Components\TextInput::make('name')
+                                    ->maxLength(255)
+                                    ->required(),
 
-                        Forms\Components\TextInput::make('email')
-                            ->maxLength(255)
-                            ->required()
-                            ->unique(ignoreRecord: true)
-                            ->email(),
+                                Forms\Components\TextInput::make('email')
+                                    ->maxLength(255)
+                                    ->required()
+                                    ->unique(ignoreRecord: true)
+                                    ->email(),
 
-                        Forms\Components\TextInput::make('username')
-                            ->maxLength(255)
-                            ->required()
-                            ->unique(ignoreRecord: true),
+                                Forms\Components\TextInput::make('username')
+                                    ->maxLength(255)
+                                    ->required()
+                                    ->unique(ignoreRecord: true),
 
-                        Forms\Components\DatePicker::make('birthday')
-                            ->required(),
+                                Forms\Components\DatePicker::make('birthday')
+                                    ->required(),
 
-                        Forms\Components\TextInput::make('password')
-                            ->password()
-                            ->required(static fn(?Author $record) => $record === null)
-                            ->autocomplete('new-password')
-                            ->revealable(),
+                                Forms\Components\TextInput::make('password')
+                                    ->password()
+                                    ->required(static fn(?Author $record) => $record === null)
+                                    ->autocomplete('new-password')
+                                    ->revealable(),
+                            ]),
+
+                        Forms\Components\Tabs\Tab::make('Media')
+                            ->schema([
+                                SpatieMediaLibraryFileUpload::make('avatar')
+                                    ->collection('avatar')
+                                    ->image()
+                                    ->imageResizeMode('cover')
+                                    ->imageCropAspectRatio('1:1')
+                                    ->imageEditor()
+                                    ->openable()
+                                    ->downloadable(),
+
+                                SpatieMediaLibraryFileUpload::make('cover_image')
+                                    ->collection('coverImage')
+                                    ->image()
+                                    ->imageResizeMode('cover')
+                                    ->imageCropAspectRatio('10:4')
+                                    ->imageEditor()
+                                    ->openable()
+                                    ->downloadable(),
+                            ]),
                     ]),
 
                 Forms\Components\Section::make()

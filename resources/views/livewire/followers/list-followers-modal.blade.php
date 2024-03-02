@@ -25,11 +25,14 @@ $transPrefix = 'web/followers.list_modal.' . ($listFollowings ? 'followings' : '
             <a class="flex items-center gap-4 p-4"
                href="{{ route('web.authors.show', $follower->id) }}"
             >
-                {{-- TODO: use author image --}}
-                <img class="w-12 h-12 rounded-full"
-                     src="https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=facearea&amp;facepad=4&amp;w=256&amp;h=256&amp;q=80"
-                     alt="{{ $follower->name }}"
-                >
+                @if($follower->avatarUrl)
+                    <img class="w-12 h-12 rounded-full"
+                         src="{{ $follower->avatarUrl }}"
+                         alt="{{ $follower->name }}"
+                    >
+                @else
+                    {!! Avatar::setTheme('author-sm')->create($follower->name)->toSvg() !!}
+                @endif
                 <div class="flex flex-col">
                     <span class="text-slate-500 text-sm font-medium">{{ $follower->username }}</span>
                     <strong class="text-slate-900 text-sm font-medium">{{ $follower->name }}</strong>
@@ -39,7 +42,7 @@ $transPrefix = 'web/followers.list_modal.' . ($listFollowings ? 'followings' : '
 
         @if($hasMore)
             <div
-                    x-data="{
+                x-data="{
                     observe: function () {
                         let observer = new IntersectionObserver((entries) => {
                             entries.forEach(entry => {
@@ -54,7 +57,7 @@ $transPrefix = 'web/followers.list_modal.' . ($listFollowings ? 'followings' : '
                         observer.observe(this.$el);
                     }
                 }"
-                    x-init="observe()"
+                x-init="observe()"
             ></div>
         @endif
     </div>

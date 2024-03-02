@@ -27,6 +27,7 @@ final class FollowerRepository
                     $follower->id,
                     $follower->name,
                     $follower->username,
+                    $follower->getFirstMediaUrl('avatar'),
                 );
             });
 

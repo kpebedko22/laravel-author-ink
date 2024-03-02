@@ -11,6 +11,7 @@ final class AuthorFollowerDTO implements Wireable
         public readonly int    $id,
         public readonly string $name,
         public readonly string $username,
+        public readonly string $avatarUrl,
     ) {
     }
 
@@ -20,6 +21,7 @@ final class AuthorFollowerDTO implements Wireable
             'id' => $this->id,
             'name' => $this->name,
             'username' => $this->username,
+            'avatarUrl' => $this->avatarUrl,
         ];
     }
 
@@ -29,6 +31,7 @@ final class AuthorFollowerDTO implements Wireable
             Arr::get($value, 'id'),
             Arr::get($value, 'name'),
             Arr::get($value, 'username'),
+            Arr::get($value, 'avatarUrl'),
         );
     }
 }
