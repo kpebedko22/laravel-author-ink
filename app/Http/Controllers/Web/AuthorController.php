@@ -14,14 +14,4 @@ class AuthorController extends Controller
             'authors' => Author::query()->paginate(),
         ]);
     }
-
-    public function show(Author $author): View
-    {
-        $author->loadCount(['books', 'followers', 'followings']);
-
-        return view('web.authors.show', [
-            'author' => $author,
-            'topBooks' => $author->books()->limit(3)->get(),
-        ]);
-    }
 }

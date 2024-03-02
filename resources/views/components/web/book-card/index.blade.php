@@ -26,13 +26,8 @@
         <div class="">
             <a href="{{ route('web.books.show', $book) }}"
                class="align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg text-gray-900 hover:bg-gray-900/10 active:bg-gray-900/20 flex items-center gap-2"
-            >{{ 'read more' }}
-                {{-- TODO: replace with heroicon --}}
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3"
-                     stroke="currentColor" aria-hidden="true" class="h-3.5 w-3.5 text-gray-900">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                          d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"></path>
-                </svg>
+            >{{ 'Читать' }}
+                <x-heroicon-o-arrow-right class="h-3.5 w-3.5 text-gray-900 stroke-2"/>
             </a>
         </div>
     </div>
