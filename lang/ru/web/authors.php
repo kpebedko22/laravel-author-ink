@@ -1,6 +1,11 @@
 <?php
 
 return [
+    'list' => [
+        'label' => [
+            'title' => 'Авторы',
+        ],
+    ],
     'view' => [
         'label' => [
 
