@@ -7,10 +7,17 @@ use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Livewire\Attributes\Lazy;
 
+#[Lazy]
 class ListAuthors extends Component
 {
     use WithPagination;
+
+    public function placeholder(): View
+    {
+        return view('components.web.placeholders.list-authors');
+    }
 
     #[Layout('layouts.app')]
     public function render(): View
